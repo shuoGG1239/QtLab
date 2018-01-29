@@ -1,0 +1,80 @@
+1.字符串的截取
+mid(),left(),right()
+
+QString x = "ImShuoGG";  
+QString y = x.mid(2, 6);            // y == "shuoGG"    ;从2开始截取6个
+QString z = x.mid(4);               // z == "uoGG"        ;从4开始截取到完
+QString a = x.left(4);		//a=="ImSh"          ;截取最左边的四个
+QString b = x.right(4);	//b=="uoGG"          ;截取最左边的四个
+int size=x.length();                    //size=8 		;字符串长度
+
+2.QString的转换
+
+---QString转成其他:
+toInt(), toDouble(), toLong(),toStdString()
+---数字转成QString:
+QString str = QString::number(54.3); 
+等价于:  str.setNum(54.3); 
+
+<1>.QString与int转换
+QString qstr = QString::number(123);
+int i = atoi(qstr.toStdString().c_str());
+也可以这样：int i = atoi(qstr.ascii());
+
+<2>.QString与string，即std::string
+string s = qstr.toStdString();
+QString qstr2 = QString::fromStdString(s);
+eg:
+q1->ques_string="shuoGG_哥哥";
+label_question->setText(QString::fromStdString(q1->ques_string));
+
+<3>QString转成char*
+eg:
+    QString name("xiaoming");
+    QByteArray ba =name.toLatin1(); //得先获得QString的latin值
+    const char *cstr = ba.data();
+
+反过来char*转为QString:
+eg:	
+    const char *cstr;
+    QString qstr= QString(QLatin1String(cstr));
+
+4.扩充
+QString str = "User: ";  
+str += "shuoGG" + "\n";   	//输出"User:shuoGG"
+
+QString的append()功能与其基本一样:
+str = "User: ";  
+str.append("shuoGG");  
+str.append("\n"); 
+
+5.检测字符串的开头结尾
+函数startsWith()和endsWith()可以检测字符串是不是以某个特定的串开始或结尾
+eg：
+QString url;
+... ...
+if (url.startsWith("http:") && url.endsWith(".png"))  //若url的开头是http:且结尾是.png,则
+{ ... } 
+等价于:
+if (url.left(5) == "http:" && url.right(4) == ".png")  
+{ ... } 
+
+6.字符串绑定大法:
+eg:
+   int clientID=777; 
+   QString IP="192.168.1.100";	
+   int Port=6000;
+   Label1->setText(tr("客户端:clientID:%1 IP:%2 Port:%3 下线 时间:%4")
+                              .arg(clientID).arg(IP).arg(Port).arg(QTime::currentTime().toString("hh:mm:ss")));
+
+
+7.替代字段
+QString tmp="select * from table1";
+tmp.replace("table1","table2");    //执行完 tmp=""select * from table1"
+
+
+
+
+
+
+

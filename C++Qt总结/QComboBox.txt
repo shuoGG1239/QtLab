@@ -1,0 +1,71 @@
+1.网上例程:
+QComboBox *combo = new QComboBox;  
+combo->setEditable(true); 			 //可否编辑
+combo->insertItem(0, QIcon( "caterpillar_head.jpg" ), "caterpillar");  
+combo->insertItem(1, QIcon( "momor_head.jpg" ), "momor");  
+combo->insertItem(2, QIcon( "bush_head.jpg" ), "bush");  
+combo->insertItem(3, QIcon( "bee_head.jpg" ), "bee");   
+
+QObject::connect(combo, SIGNAL(activated(const QString &)), this,SLOT(setText(const QString &))); 
+//activated(const QString &)信号带着被选item的text发射出去，由slot接收
+
+  
+ comboBoxCmd->setCurrentText("广播"); //软件模拟人点击某个text对应的项,但是不会触发activated
+ emit comboBoxCmd->activated("广播"); //手动发送activated信号
+
+2.我的例程: 
+
+
+    ui->comboBoxStu->insertItem(0,"学生学号");
+    ui->comboBoxStu->insertItem(1,"学生姓名");
+    ui->comboBoxStu->insertItem(2,"性别");
+    ui->comboBoxStu->insertItem(3,"籍贯");
+
+    if(ui->comboBoxStu->currentText()=="学生学号") {
+        stuTableChar="stuid";}
+    if(ui->comboBoxStu->currentText()=="学生姓名") {
+        stuTableChar="stuname";}
+    if(ui->comboBoxStu->currentText()=="性别") {
+        stuTableChar="sex";}
+    if(ui->comboBoxStu->currentText()=="籍贯") {
+        stuTableChar="place";}
+
+   ui->comboBoxStu->itemText(1)  // "学生姓名"
+
+
+combo->findText("COM12");  //有则返回COM12对应的item号,否则返回-1
+---------------------------------------------------------------------------------------------------
+简单教程:
+
+myComboBox = QComboBox() 			//添加一个 combobox
+myComboBox.addItem(rates) 				//添加一个下拉选项
+myComboBox.addItems(["%d years" % x for x in range(2, 26)]) //从序列中添加
+myComboBox.setMaxVisibleItems(10) 		//设置最大显示下列项 超过要使用滚动条拖拉
+myComboBox.setMaxCount(5) 			//设置最大下拉项 超过将不显示
+myComboBox.setInsertPolicy(QComboBox.InsertAfterCurrent) //设置插入方式
+插入方式有:
+NoInsert,InsertAtTop,InsertAtCurrent,InsertAtBottom,InsertAfterCurrent
+
+InsertBeforeCurrent,InsertAlphabetically
+
+字面意思都好理解 最后一个是按字母表顺序插入
+
+QComboBox 发出一个currentIndexChanged(int) 的信号.
+
+QComboBox 得到当前项 currentIndex() + 1 #QComboBox 默认的currentIndex为 -1
+
+QComboBox.findText('dsfds') 	//返回 内容为dsfds的索引
+
+QComboBox.currentText()	//获得当前选框的text
+
+fromSpinBox = QDoubleSpinBox()
+fromSpinBox.setRange(0.01, 10000000.00)
+
+fromSpinBox.setSuffix(" %d") #设置后缀 如显示 10.0%d
+
+fromSpinBox.setPrefix('#d') #设置前缀
+fromSpinBox.setValue(1.00) 设置值
+
+QDoubleSpinBox 发出 valueChanged(double) 信号 有setValue(double)插槽
+
+QComboxBox可以建立下拉選單，以供使用者選取項目，以下直接看個簡單的示範，程式中包括下拉選單，選擇選項之後會改變QLabel的文字內容：

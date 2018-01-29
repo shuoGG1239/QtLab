@@ -1,0 +1,68 @@
+QT       += network
+
+
+1.UDP服务器
+
+udpSocket=new QUdpSocket(this);
+int port = 5555;   //端口号
+msg=new QLineEdit(this); 
+udpSocket->writeDatagram(msg.toLatin1(),msg.length(),QHostAddress::Broadcast,port);
+//发送文本框的信息出去. 
+//形参: writeDatagram(数据内容, 数据长度, 传输方式, 端口号)
+
+2.UDP客户端
+
+udpSocket=new QUdpSocket(this);
+int port = 5555;   //端口号
+msg=new QLineEdit(this); 
+udpSocket->bind(port);	//绑定端口号
+connect(udpSocket,SIGNAL(readyRead()),this,SLOT(dataReceived()));
+ //收到广播立即执行dataReceived()
+
+void UdpClient::dataReceived()
+{
+    while(udpSocket->hasPendingDatagrams())
+    {
+        QByteArray datagram;
+        datagram.resize(udpSocket->pendingDatagramSize());  //根据收到的数据定数组容器长度
+        udpSocket->readDatagram(datagram.data(),datagram.size());
+	//形参: readDatagram(存放目标数组, 想接收的数据长度)
+        QString msg=datagram.data();
+        ReceiveTextEdit->setText(msg);	//显示收到的一串数据
+    }
+}
+
+**************************************************************************************
+QTcpSocket
+1.TCP服务器
+	内容太多:参照 QT5开发及实例\本书源程序\CH10CH1004
+	研究tcpserver.cpp即可, 另外两个tcp配置的话...反正已经封装成头文件给洒家用了(暗笑)
+2.TCP客户端
+        tcpSocket = new QTcpSocket(this);
+//一旦连接上会发送 connected() 信号, 连接失败会发送 disconnected() 信号
+//接收到数据时会发送 readyRead() 信号.
+        connect(tcpSocket,SIGNAL(connected()),this,SLOT(slotConnected()));
+        connect(tcpSocket,SIGNAL(disconnected()),this,SLOT(slotDisconnected()));
+        connect(tcpSocket,SIGNAL(readyRead()),this,SLOT(dataReceived()));
+        tcpSocket->connectToHost(*serverIP,port);
+        tcpSocket->write(msg.toLatin1(),msg.length());   //发送数据__重要!  形参(数据, 长度);
+
+void TcpClient::slotConnected()
+{
+	... ...  //连接上的反应
+}
+void TcpClient::slotDisconnected()
+{
+	... ... //没连接上的反应
+}
+//收数据的跟UDP的基本一致
+void TcpClient::dataReceived()
+{
+    while(tcpSocket->bytesAvailable()>0)
+    {
+        QByteArray datagram;
+        datagram.resize(tcpSocket->bytesAvailable());
+        tcpSocket->read(datagram.data(),datagram.size());  //接收数据__重要! 
+        QString msg=datagram.data();
+    }
+}

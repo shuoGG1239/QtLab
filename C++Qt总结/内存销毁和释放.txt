@@ -1,0 +1,8 @@
+Qt销毁机制:
+  parent销毁时,child也会自动被销毁
+
+
+QWidget::setAttribute(Qt::WA_DeleteOnClose);  //窗体close时自动delete
+
+
+

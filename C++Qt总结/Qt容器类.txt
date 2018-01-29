@@ -1,0 +1,6 @@
+Qt容器类常用api:
+	append()
+	at()
+	removeAt()
+
+当<T>为指针时，即容器装的是堆内存时，清内存统一用qdeleteAll()，一般先clear()再qdeleteAll()。

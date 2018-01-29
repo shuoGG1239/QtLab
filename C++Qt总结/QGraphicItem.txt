@@ -1,0 +1,8 @@
+QGraphicsPixmapItem是QGraphicsItem的子类
+
+    this->setTransformOriginPoint(pic.width()*0.5,pic.height()*0.5);//几何中心
+    this->setPixmap(pic);
+    this->setPos(x,y);
+    this->setOpacity(1);
+    this->setScale(1);
+    this->setRotation(3.14);

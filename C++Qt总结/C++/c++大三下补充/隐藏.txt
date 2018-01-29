@@ -1,0 +1,31 @@
+class Father
+{
+    virtual void richfamily();
+    void playgame()
+    {
+        cout<<"father play";
+    }
+};
+
+class Son
+{
+   void richfamily();  //重写，father的richfamily被son覆盖掉了
+   void playgame()  //隐藏，隐藏掉father的playgame，但还存在
+   {
+      cout<<"son play";
+   }
+}
+
+main()
+{
+   Son myson;
+   myson.playgame();
+   myson.Father::playgame();  //调用被隐藏的函数 
+}
+
+PS:
+三种特殊的成员函数从来不会被继承:
+1. 复制构造函数
+2. 复制赋值运算符
+3. 析构函数
+

@@ -1,0 +1,5 @@
+RTTI
+
+typeid是关键字, 相当于sizeof一般的存在.
+
+typeid(变量).name; //返回变量所属类的名字 char*

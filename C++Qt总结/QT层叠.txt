@@ -1,0 +1,8 @@
+mybutt= new QPushButton(this);
+QPixmap piximage1;
+piximage1.load("123.png");    //此时图片是在mybutt的上层
+
+mybutt->raise();  //提升一层
+//mybutt->lower();//降低一层
+
+*记住:这类移图层函数必须放在最后才可以生效

@@ -1,0 +1,23 @@
+static_cast 基本和C的强制转换功能一样;
+dynamic_cast主要用于下行转换;
+
+总结:
+   static_cast: 当做C的强制转化来用; 适合上行转换, 不适合下行转化;
+   dynamic_cast: 适合做下行转换;
+   reinterpreter_cast: 适合不同类型指针的转换;
+
+其他两种const_cast和reinterpreter_cast基本不用, 无视.
+
+
+上行转换:  (BaseClass)child1
+eg:
+int i=100;
+char c;
+c= static_cast<char>(i); // 上行转换
+
+父子关系, 父是上, 子是下, 所以上行是往基类转换
+
+
+效率问题:
+typeid效率低
+dynamic_cast效率更低

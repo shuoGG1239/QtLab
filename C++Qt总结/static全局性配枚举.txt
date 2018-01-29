@@ -1,0 +1,60 @@
+1.static在C++确实有全局性作用，跟java一样；Ｃ＋＋的内类静态变量必须在类外初始化；
+2.static的变量在其他类调用时用“::”，Java是用“.” ;
+3.enum里面的元素在C++可以直接拿来当int用，而C则不可以，须强制转换 ;
+
+
+class Dialog : public QDialog
+{
+    Q_OBJECT
+public:
+    explicit Dialog(QWidget *parent = 0);
+    static int userPower;		//静态变量
+    enum powerOfuser		//枚举,这个部分只是个数据类型而已,并没有定义变量
+   {
+        normalUser,			//0
+        teacherUser,			//1
+        superUser			//2
+    };
+private:
+    Ui::Dialog *ui;
+public slots:
+    void on_pushButtonlog_clicked();
+};
+
+int Dialog::userPower=0;		//类内的静态变量必须在类外面初始化!!!!!!!!
+				//初始化尽量别放在.h文件,被多个使用可能会重复声明!!!!
+
+void Dialog::on_pushButtonlog_clicked()
+{
+    if(ui->lineEditPassword->text()=="123"&&ui->lineEditUser->text()=="shuoGG")
+    {
+        userPower=Dialog::normalUser;	//这样做是可以的,枚举成员不必强制转换成int
+        accept();			//C++的编译器才有自动把枚举转int，C则没有
+    }
+    else if(ui->lineEditPassword->text()=="111"&&ui->lineEditUser->text()=="linshuo")
+    {
+        userPower=Dialog::teacherUser;
+        accept();
+    }
+    else
+    {
+        QMessageBox::information(this,"登陆错误","密码或用户名错误");
+    }
+}
+
+
+/*******************************主函数*******************************/
+#include "widget.h"
+#include "dialog.h"
+#include <QApplication>
+
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    Widget w;
+    Dialog log;
+    if(Dialog::userPower==Dialog::normalUser)  //static变量的全局性就体现出来了
+    {
+	w.show();
+    }
+}

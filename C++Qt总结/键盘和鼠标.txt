@@ -1,0 +1,78 @@
+/*鼠标事件*/
+//类外定义
+void  Blue_Button::mouseReleaseEvent (QMouseEvent *event)
+{
+     if(event->button()==Qt::LeftButton)   //也可以 if((event->button()&Qt::LeftButton)==1)
+    {
+       this -> setIcon(QIcon(*releasePicture));
+       emit leftclick();                                       //leftclick()是自己定的信号
+    }
+//用if(this->objectName=="button1"){} 可以来过滤对象,使不同对象有不同的动作	
+}
+
+/*键盘*/
+//类内定义
+    void keyPressEvent(QKeyEvent *e)
+    {
+        if (e->key() == Qt::Key_Q)
+        {
+            this->setStyleSheet("QFrame#My_First{border-image:url(琪雅酱.jpg)}");
+            emit Qreadypress();         //当按下Q的时候发出readypress的信号
+        }      
+    }
+
+void keyReleaseEvent(QKeyEvent *e)
+{
+
+}
+
+/*ctrl+shift +A*/
+void Window::keyPressEvent(QKeyEvent *e)  
+{  
+    if (e->modifiers() == (Qt::ShiftModifier | Qt::ControlModifier) && 
+	 e->key() == Qt::Key_A)  
+    {  
+        //pressed  
+    }  
+} 
+
+/*Ctrl+左击*/
+void Window::mousePressEvent(QMouseEvent *e)  
+{  
+    // 获取鼠标在点击窗体上的坐标  
+    QPoint pos = e->pos();  
+    if (e->button() == LeftButton)  
+    {  
+        if ( QApplication::keyboardModifiers () == Qt::ControlModifier)  
+        {  
+            //pressed  
+        }  
+    }  
+} 
+
+
+/*
+    Tab比较特殊，QWidget对Tab的焦点处理优先进行，会有冲突，
+    所以不能用KeyPressEvent，而是得重写event
+*/
+bool MyWidget::event(QEvent *event)
+{
+      if (event->type() == QEvent::KeyPress) 
+     {
+	QKeyEvent *ke = static_cast<QKeyEvent >(event);
+	if (ke->key() == Qt::Key_Tab) 
+	{   //按下了Tab的自定义按键事件
+	    return true;
+ 	}
+     } 
+      else if (event->type() == MyCustomEventType)
+     { //用户自己增加的event
+                MyCustomEvent *myEvent = static_cast(event);
+	return true;
+     }
+    return QWidget::event(event);
+}
+
+
+Key_Return: 主键盘enter
+key_Enter: 小键盘enter

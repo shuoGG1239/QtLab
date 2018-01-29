@@ -1,0 +1,16 @@
+1.头文件可以互相包含
+eg: Main_menu.h 包含了 shuoGG_Designed_Buttons.h
+      同时shuoGG_Designed_Buttons.h也能包含Main_menu.h 
+
+2.在某头文件用到其他头文件的类或其他变量,必须在头文件的开头声明要用到的类或变量
+eg: Main_menu.h 用到了 shuoGG_Designed_Buttons.h的Blue_Button类,则应该:
+
+#ifndef MAIN_MENU_H
+#define MAIN_MENU_H
+#include <Q...>
+#include "shuoGG_Designed_Buttons.h"
+class Blue_Button;		//声明该类
+....#endif
+     同样shuoGG_Designed_Buttons.h用到了Main_menu.h的newmusic类也应该声明该类;
+
+3.同一个文件里面,写在上面的类用到下面类里面的东西,必须在文件前面先声明下面那个类;(与c语言同理)

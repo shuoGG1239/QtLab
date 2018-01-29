@@ -1,0 +1,46 @@
+namespace ns1
+{
+    const int RATE=0.08;//常量
+    double pay; //变量
+    double tax（ ） //函数
+    {return a*RATE;}
+    namespace ns2 //嵌套的命名空间
+   {
+      int age;
+   }
+}
+如果想输出命名空间ns1中成员的数据，可以采用
+下面的方法:
+cout<<ns1::RATE<<endl;
+cout<<ns1::pay<<endl;
+cout<<ns1::tax（）<<endl;
+cout<<ns1::ns2::age<<endl;//需要指定外层的和内层的命名空间名
+
+
+或者在文件开头写: using namespace ns1;
+
+/*************************以下是百度的****************************/
+
+命名空间, 就是把一些 class 变量 对象 等 归类 到 某 “空间”，也就是规入一个组。
+想用某组时，用 using .... 表明。
+例如：
+ 
+命名空间 first,里面有 变量 var ,整型，初值 5
+namespace first
+{int var = 5;}
+ 
+命名空间 second 里面有 变量 var ,double型，初值 3.1416
+namespace second
+{double var = 3.1416;}
+ 
+如果有：
+using namespace first;
+cout << var << endl;
+输出 5
+ 
+如果有：
+using namespace second;
+cout << var << endl;
+输出 3.1416
+ 
+同样，不同空间 有同名函数变量，同名类，同名对象 和 不同名函数变量，类，对象。有了命名空间，便可找到 想要的那组 函数，变量，类，对象。

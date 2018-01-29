@@ -1,0 +1,7 @@
+stray177:
+	代码从记事本复制到QtCreator的原因.
+
+
+undefined reference to vtable:
+	1. 头文件缺失;
+	2. 子类没有实现纯虚函数;

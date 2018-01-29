@@ -1,0 +1,54 @@
+单次计时神器:   QTimer::singleShot(2400,animation_tool,SLOT(start()));
+在哪都可以用,直接粘贴就可以生效!
+功能:例子里面是  "从这条代码开始过2400ms就执行animation_tool的start(),且只有单次."
+
+QTimer默认为循环计时;
+
+QTimer构造：
+  QTimer timer = new QTimer();
+ 
+QTimer设置超时并启动：
+  timer->setInterval(1000);
+  timer->start();
+或：timer->start(1000);
+ 
+QTimer改变定时间隔为n毫秒
+  timer->changeInterval(n);
+如果这个定时器信号是运行的，它将会被停止并且重新开始，否则它将会被开始。
+ 
+QTimer是否则正在运行
+  timer->isActive()
+如果定时器正在运行，返回真，否则返回假。
+ 
+QTimer停止
+  timer->stop();
+ 
+当达到超时时间，则发射信号，执行指定的槽函数
+ QObject::connect(timer, SIGNAL(timeout()), this, SLOT(myTimeout()));
+
+*********************************************************************************
+举例:
+ 以下是利用QTimer来控制一个进度条，超时时间为1000毫秒（1秒），当达到超时时间时，进度条增加1%，当进度条为100%时，停止Qtimer。
+ 
+MyWidget::MyWidget(QWidget *parent) :
+ QWidget(parent)
+{
+  this->setFixedSize(400, 300);
+  progress_value = 0;
+  timer = new QTimer();
+  timer->setInterval(1000);
+  timer->start();
+  progress_bar = new QProgressBar(this);
+  progress_bar->setGeometry(50, 50, 150, 20);
+  progress_bar->setValue(0);
+  connect(timer, SIGNAL(timeout()), this, SLOT(changeValue()));
+}
+void MyWidget::changeValue()
+{
+  progress_value++;
+  if(progress_value > 100)
+  {
+    timer->stop();
+  }
+  progress_bar->setValue(progress_value);
+}

@@ -1,0 +1,20 @@
+直接出现一个消息框:(这句可以直接用,不用new和初始化什么的)
+QMessageBox::information(this,"窗口名字",string1);
+
+
+eg:
+QMessageBox::information(parentwidget,"error","hello");
+//父窗体为parentwidget,窗口的标题的为"error",内容为"hello".
+
+
+/**************************Yes-No消息框***********************************/
+    int returnStatus = QMessageBox::question(this, "Warning", "Sure to transform?",
+                                             QMessageBox::Yes|QMessageBox::No,QMessageBox::Yes);
+    if(QMessageBox::Yes == returnStatus)
+    {
+        QMessageBox::information(this,"Tip","Transform OK");
+    }
+    else
+    {
+        QMessageBox::information(this,"Tip","Transform NO");
+    }

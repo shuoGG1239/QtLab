@@ -1,0 +1,3 @@
+int mynum=qrand()%6 ;		//产生0~5的随机数
+int mynum=qrand()%10 ;		//产生0~9的随机数
+int mynum=qrand()%100 ;		//产生0~99的随机数

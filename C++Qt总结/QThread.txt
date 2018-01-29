@@ -1,0 +1,45 @@
+static void QThread::sleep() ; //延时函数
+
+多线程基本都得继承QThread然后重写run();
+
+class myThread : public QThread
+{
+     Q_OBJECT
+public:
+	myThread(QObject *parent=0);  
+protected:
+	void run();
+signals:
+	void done();          
+}
+
+myThread::myThread(QObject *parent):QThread(parent)
+{
+}
+void myThread:: run()
+{
+   for(int i=0;i<10000;i++)
+  {
+    emit done();	
+  }
+}
+
+//使用方法:
+myThread  *thread=new myThread(this);
+thread->start();//线程启动
+
+/*************************常用函数或变量***************************/
+1.
+静态函数: currentThreadID() 和 currentThread()返回标识当前正在执行的线程;
+2.
+sleep()其实就是线程版本的delay();
+3.
+bool isFinished();  //查询法
+bool isRunning();
+
+QThread自带的signals: //中断法
+  void finished();
+  void started();
+4.
+exit() 或 quit() 都可以退出线程;
+

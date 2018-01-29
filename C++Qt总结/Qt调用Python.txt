@@ -1,0 +1,70 @@
+1. 直接运行py脚本, 不用加依赖, 简单粗暴:
+    QProcess p;
+    p.start("python F:/123.py 999");
+    p.waitForFinished();
+    QByteArray dataResult =  p.readAllStandardOutput();		//py程序的标准输出
+    QString strResult = QString::fromLatin1(dataResult.data());	
+    p.close();
+
+
+
+2. 调用py中的函数, 需要依赖, 比较麻烦 : 
+
+(1) 在.pro中配置链接库 :
+INCLUDEPATH += -I C:\Python27\include
+LIBS += -L C:\Python27\libs -lpython27
+
+PyRun_SimpleString("import sys");
+(2) 代码
+#include <QCoreApplication>
+#include <Python.h>
+#include <iostream>
+using namespace std;
+int main(int argc, char *argv[])
+{
+    QCoreApplication a(argc, argv);
+   /************************Start: 初始化python模块***************************/
+    Py_Initialize();
+    if ( !Py_IsInitialized() )
+    {
+        return -1;
+    }
+    /************************1.最基础的无参函数调用***************************/
+    //导入uuu.py模块, 直接部署到工程的根目录即可
+    PyObject* pModule = PyImport_ImportModule("uuu");
+    if (!pModule) {
+        printf("Cant open python file!\n");
+        return -1;
+    }
+    //获取uuu模块中的hello函数
+    PyObject* pFunhello= PyObject_GetAttrString(pModule,"hello");
+    if(!pFunhello){
+        cout<<"Get function hello failed"<<endl;
+        return -1;
+    }
+    //调用hello函数
+    PyObject_CallFunction(pFunhello,NULL);
+
+    /************************2.有参带返回的额函数调用***************************/
+    PyObject* pFunadd= PyObject_GetAttrString(pModule,"add");
+    PyObject *pArgs = PyTuple_New(2);
+    PyTuple_SetItem(pArgs, 0, Py_BuildValue("i", 12));  //参数0 : "i" 代指整型
+    PyTuple_SetItem(pArgs, 1, Py_BuildValue("i", 13));  //参数1 : "i" 代指整型
+    PyObject *pReturn = NULL;
+    pReturn = PyEval_CallObject(pFunadd, pArgs);        //执行函数并获取返回
+    int returnValueInt;
+    PyArg_Parse(pReturn, "i", &returnValueInt);         //根据py源程序的返回值类型确定为:"i"
+
+    /************************End: 释放Python***************************/
+    Py_Finalize();
+    return a.exec();
+}
+
+################uuu.py###############
+def hello():
+    print "hello"
+
+def add(arg1, arg2):
+    print "The add result is %d"%(arg1+arg2)
+    return arg1+arg2
+####################################

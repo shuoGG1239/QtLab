@@ -1,0 +1,5 @@
+QDialog  mydialog;
+if(QDialog::Accepted==mydialog.exec())
+	emit OKsignal;
+else if(QDialog::Rejected==mydialog.exec())
+	emit NOsignal;

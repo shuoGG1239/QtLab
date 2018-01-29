@@ -1,0 +1,52 @@
+
+实现QGraphicsEffect和QPropertyAnimation结合起来做动画的实例:
+
+#include <QGraphicsEffect>
+#include <QGraphicsOpacityEffect>
+
+/*可以实现刚new出来就渐变出来*/
+ newframe1::newframe1(QWidget* parent):QFrame(parent)
+ {
+      QGraphicsOpacityEffect *myeffect=new QGraphicsOpacityEffect;   //专门控透明度
+      this->setGraphicsEffect(myeffect);
+
+      QPropertyAnimation *animation = new QPropertyAnimation(myeffect,"opacity");
+      animation->setDuration(1000);
+      animation->setStartValue(0);
+      animation->setEndValue(1);
+      animation->start();
+ }
+
+//QGraphicsOpacityEffect只有2个Property Documentation:   opacity  和  opacityMask
+
+//QGraphicsEffect还有很多其他的分支:
+用QAnimation和QGraphicsEffect，创建一个QGraphicsPixmapItem，然后设置它的特效为颜色特效QGraphicsColorizeEffect，再通过QPeropertyAnimation关联颜色属性，显示颜色渐变效果，
+
+/*****************************************************************************************************/
+	1.QGraphicsBlurEffect
+该类用应产生模糊效果,主要函数setBlurRadius(qrealblurRadius),用于控制图形元素的模糊度，数值越大越模糊。使用该类例子如下:
+
+QGraphicsBlurEffect *e0 = new QGraphicsBlurEffect(this);
+e0->setBlurRadius(0.2);
+item[0]->setGraphicsEffect(e1);//item[0]为QGraphicsItem指针
+
+	2.QGraphicsColorizeEffect
+该类提供了使用另外一种颜色对当前图形的一种着色功能。主要函数是setColor(QColor)和setStrength (qrealstrength)，指定了着色和着色强度。使用该类例子如下:
+
+QGraphicsColorizeEffect *e1 = newQGraphicsColorizeEffect(this);
+e1->setColor(QColor(0,0,192));
+item[1]->setGraphicsEffect(e1);
+
+	3.QGraphicsDropShadowEffect
+该类提供了图形元素的阴影效果，用于增加立体感。主要设置函数有3个，setColor()用于设定阴影的颜色,setBlurRadius()用于设定阴影的模糊度，setOffset (qreal dx,qrealdy)用于设定在哪个方向产生阴影效果，如果dx为负数，则阴影在图形元素的左边。使用该类例子如下:
+
+QGraphicsDropShadowEffect *e2 = newQGraphicsDropShadowEffect(this);
+e2->setOffset(8,8);
+item[2]->setGraphicsEffect(e2);
+
+	4.QGraphicsOpacityEffect
+该类用于图形元素的透明效果，主要函数是setOpacity(qrealopacity)，用于设置透明度，参数值在0和1.0之间。也可以设置部分透明效果，需要调用的函数是setOpacityMask(QBrush mask)。使用该类例子如下:
+
+QGraphicsOpacityEffect *e3 = newQGraphicsOpacityEffect(this);
+e3->setOpacity(0.7);
+item[3]->setGraphicsEffect(e3);

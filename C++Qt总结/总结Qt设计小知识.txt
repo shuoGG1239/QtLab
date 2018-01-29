@@ -1,0 +1,48 @@
+1. QObject必须在QApplication之后创建, 在QApplication销毁前销毁;
+
+2. 推荐在槽内删除信号的sender;
+
+3. moc文件里面的函数是在预编译前加入的, 里面的东西直接代替QObject这个宏;
+
+4. const全局变量的作用域与常规的全局变量的作用域不同，是文件作用域，即只在本文件；
+
+5. 对一个非空指针进行多次delete会出错，对一个空指针进行delete没事，所以delete直接将指针置NULL是好习惯；
+
+6. 指针：p[i]其实最终会被编译器翻译为*(p+i)，所以就能理解p[-1]为什么是指向前一个了；
+
+7. 数组名称是指向数组第一个单元的const类型得指针的别名；
+
+8. 用堆申请的数组，清内存的格式为：delete[] pt;
+
+9. typeid()和dynamic_cast功能类似，可以近似当做java的instanceof，之所以这几可以用于if判断，
+是因为当结果为"否"时，返回的是null，即0；其实主要功能是反射，RTTI；
+Qt提供了qobject_cast的好功能;
+
+10. 当一个类有虚方法，则应该为这个类定义一个虚析构函数；因为如果这个带有虚方法的基类的析构
+不是virtual则其子类的析构函数将无法执行!
+
+11. 虚基类是为了也仅仅为了解决多重继承的问题: eg:
+class A{...};
+class B: virtual public A{...};
+class C: virtual public A{...};
+class D: public B,public C {...};  //这样就合法了, 如果前面的B,C类没有virtual则非法了
+
+12.private派生的作用在于屏蔽基类的public方法，即不让用户使用基类的所有方法。
+class A: private B{...};
+
+13.QString str;  和 QString str();  其实是不一样的，前者执行默认构造函数，后者是执行没有输入参数的
+构造函数，如果用户没用定义此函数才执行默认构造函数;
+
+14. qmake其实只是个makefile生成器, 最终执行还是得靠make;
+
+15. 关于诸如以下函数的理解:
+ inline Connection &operator=(Connection &&other) { 
+       qSwap(d_ptr, other.d_ptr); 
+        return *this;
+  }
+ 首先, 该函数是Connection类的一个public函数, d_ptr为Connection类的一个private成员变量;
+ 该函数重载了=
+ 例子: Connection mycon;
+         mycon=othercon; //等价于mycon.ptr和othercon.ptr值进行了交换.
+return *this的意思是  (mycon=othercon) == ptr交换后的mycon本身, 在本例子中没起到作用.
+

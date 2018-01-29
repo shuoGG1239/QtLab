@@ -1,0 +1,7 @@
+快捷键:
+ 
+    myshortcut=new QShortcut(this);
+    myshortcut->setKey(tr("Ctrl+A"));	//tr()必须加上,不加必错
+//    myshortcut=new QShortcut(QKeySequence(Qt::Key_F3),this);  另外一种形式
+    connect(myshortcut,SIGNAL(activated()),this,SLOT(slotDetail()));
+    this->setFocus();	//给焦点

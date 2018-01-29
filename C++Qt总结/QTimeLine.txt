@@ -1,0 +1,48 @@
+其实动画的本质就是在每一定时间间隔内显示一帧图像，当这个间隔较短的时候人眼就感觉不出来了，觉得看到的是连续的影像。Qt为开发动画效果的人员提供了一个很好的时间控制类QTimeLine.
+
+QTimeLine的最简单用法是
+
+  QTimeLine timeline=new QTimeLine(1000);
+  timeLine->setFrameRange(0, 100);
+  connect(timeline,SIGNAL(frameChanged(int)),yourobj,SLOT(yourobjslot(int)));
+  timeline->start();
+
+解释:
+
+1. 创建的时间线持续时长，参数值是毫秒数，1000就是1秒
+
+2. 在这段时间线内，创建的输出值范围。也就是第三行中frameChanged信号里传出的参数值范围
+
+3. QTimeLine的默认时间间隔是40ms（也就是1秒25帧），每个间隔会发出一个frameChanged()的信号，此处将该信号连接到你能控制动画效果的对象和槽上。
+
+4. 启动timeline后，每个时间间隔的frameChanged()信号才能正常发出。
+
+当然还有一些复杂的参数设置可以更好的控制你的效果。
+
+setLoopCount(int count)该函数控制了动画的重复次数。默认是1，如果设置成0则表示无限循环。
+
+setUpdateInterval(int interval)该函数用于控制更新动画的时间间隔。
+
+在QTimeLine所设置的持续时长过去后，相应的会发出一个finished()的信号，你可以在接收到这个信号以后做一些扫尾的工作。
+
+另外还有一个别致的选项：
+
+setCurveShape (CurveShape shape)，该选项用于控制间隔输出数值的一个变化规律。CurveShage现有的选项是:(枚举量)
+
+QTimeLine::EaseInCurve 0       先慢后快,冥函数
+
+QTimeLine::EaseOutCurve 1    先线后慢,对数函数
+
+QTimeLine::EaseInOutCurve 2 先慢再线后慢,贝塞尔曲线
+
+QTimeLine::LinearCurve 3       线性 (e.g., if the duration is 1000 ms, the value at time 500 ms is 0.5).
+
+QTimeLine::SineCurve 4 The value grows sinusoidally.
+
+QTimeLine::CosineCurve 5 The value grows cosinusoidally.
+
+不多加解释了，2是默认值。因为即使没有这个选项，如果只输出均匀数(选项3)，我们还是可以自己对数据进行二次加工，生成我们想要的任意规律的数字。
+
+利用QTimeLine我们很容易实现一些图像消隐的效果，只需要你在每个间隔结束后显示图像消隐过程中不同阶段的一个定格即可。这里就有一个很好的例子，短短300余行，想必用不了你多长时间即可读通
+
+http://qt.gitorious.org/qt-labs/graphics-dojo/trees/master/genie

@@ -1,0 +1,17 @@
+void setFocus(); //获得焦点
+void clearFocus();//清除焦点
+
+void setFocusPolicy(Qt::FocusPolicy policy);
+Q::ClickFocus ==>实用,通过单击获得焦点
+
+virtual函数:
+void focusOutEvent(QFocusEvent *e); //失去焦点时触发
+void focusInEvent(QFocusEvent *e);   //获得焦点时触发
+
+/*功能: 随便点一个地方就聚焦回来*/
+void Widget::mousePressEvent(QMouseEvent *e)
+{
+    this->setFocus();
+}
+
+ps: this->setFocusPolicy(Qt::ClickFocus);//此句可代替上面的随点即聚焦的实现

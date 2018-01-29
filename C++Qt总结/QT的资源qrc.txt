@@ -1,0 +1,56 @@
+qrc的资源是只读的!!!!!!!!不能拿来存什么数据库,int什么的!!!!!!!!
+
+1、将图像资源等都包含在一个文件夹中，如images，
+
+在QtCreater中创建qrc文件的方法：
+
+ 添加新文件—Qt—Qt资源文件
+在资源包: 右击--> 用...打开 -->普通文本打开,就有xml代码了.
+在资源文件中添加前缀、文件等
+
+2、在工程文件*.pro中添加行：
+
+RESOURCES += application.qrc		//其实creator会自动添加
+
+3、在main函数中强制初始化资源Q_INIT_RESOURCE(application);如：
+
+/*本例子在代码文件夹根目录新建了个"images"文件夹并将myicon.ico放入其中*/
+/*建立.qrc时前缀为  "/"  ,表示资源包的根目录 */
+int main(int argc, char *argv[])
+{
+
+    Q_INIT_RESOURCE(application);	 //资源定义宏(会发现application是普通字体,很正常的)
+
+    Dialog w;
+    w.setWindowIcon(QIcon(":/images/myicon.ico"));		//注意有":/", QT用":/"来访问资源
+
+}
+
+PS:1.若图片文件夹images放在"build-Desktop-..."文件夹中,则: QIcon("images/myicon.ico");
+
+    2.若.qrc的前缀为"/src", 则: QIcon(":/src/images/myicon.ico")
+
+
+/*******************资源的总结*******************/
+1. 前缀不能为空, 最简单也要有个"/" ,代指位于资源包的根目录, 是一个虚拟的路径, 
+不是文件的物理路径!
+
+2.想要加入qrc的文件直接丢到代码的文件就行, 注意, 不是丢到build-...文件夹, 而是代码的!
+
+3.举例:
+         有2个文件: shuoGG.jpg  music.mp3
+        (1)将这2个文件直接放到代码文件夹的根目录;
+        (2)在工程添加mysrc.qrc;
+        (3)添加一个前缀:      /image 
+        (4)再添加一个前缀:   /music 
+        (5)选中/image项然后添加那张shuoGG.jpg进来
+        (6)选中/music项然后添加那首music.mp3进来
+        (7)OK,资源添加完成!
+        (8)使用:
+                Q_INIT_RESOURCE(mysrc);
+	mylabel->setPixmap( QPixmap(":/image/shuoGG.jpg") );
+                playerList->addMedia(":/music/music.mp3");
+        (9)所以前缀的作用就是一个虚拟管理地址，方便分类！
+
+
+

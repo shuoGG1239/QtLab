@@ -1,0 +1,8 @@
+void ShowHideButton::paintEvent(QPaintEvent *e)
+{
+    QStylePainter painter(this);
+    QStyleOptionButton option;
+    initStyleOption(&option);
+    painter.setOpacity(_buttonOpacity);
+    painter.drawControl(QStyle::CE_PushButton, option);
+}

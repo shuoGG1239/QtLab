@@ -1,0 +1,113 @@
+
+第一决:QPropertyAnimation
+QPropertyAnimation用于和QObject中的属性properties进行通信，如QWidget的大小,坐标等.
+来看代码:
+
+//像"geometry"这种properties直接F1一下QWidget就可以找到Properties项了
+QPropertyAnimation *animation = new QPropertyAnimation(myWidget, "geometry");
+animation->setDuration(10000);
+animation->setStartValue(QRect(0, 0, 100, 30));
+animation->setEndValue(QRect(250, 250, 100, 30));
+animation->start();
+
+第一行创建的QPropertyAnimation对象关联了myWidget这个窗体的几何属性。后面的几句分别设置了这个动画的时长，起始坐标和结束坐标。剩下的事情就交改QProperAnimation去做就行了。然后调用start()启动它。没错，五行代码就完成了一个完成了一个自动从一个坐标点移动到另一个坐标点的窗体。下面我给出一个可以运行的代码,是一只小鸟从下角移到中间的一个小动画，当然你得自己准备这个同名的图片:)
+#include <QApplication>
+#include <QLabel>
+#include <QPixmap>
+#include <QPropertyAnimation>
+
+int main(int argc,char *argv[]){
+    QApplication app(argc,argv);
+    QWidget *w=new QWidget();
+    w->resize(300,400);
+
+    QPixmap birdimg=QPixmap("twitter-bird.png").scaled(40,40);
+
+    QLabel *bird_1=new QLabel(w);
+    bird_1->setPixmap(birdimg);
+
+    QPropertyAnimation *anim1=new QPropertyAnimation(bird_1, "pos");
+    anim1->setDuration(2000);
+    anim1->setStartValue(QPoint(0, 360));
+    anim1->setEndValue(QPoint(110, 180));
+    anim1->start();
+
+    
+    bird_1->move(-40,-40);
+    w->show();
+    return app.exec();
+}
+
+上面的例子使用了label的位置属性pos。当然你可以在自己的类里增加其它property的，比如让颜色在变。
+
+第二决:setEasingCurve
+上面那个例子中小鸟的移动是线性的，未免太单调了点。QPropertyAnimation中的void setEasingCurve (const QEasingCurve & easing)函数正是用于实现不同的曲率变化的，QEasingCurve可用的参数列表(包括函数曲线图)可在文档中查到 。将上面动画相关的代码部分改成
+    QPropertyAnimation *anim1=new QPropertyAnimation(bird_1, "pos");
+    anim1->setDuration(2000);
+    anim1->setStartValue(QPoint(0, 360));
+    anim1->setEndValue(QPoint(110, 180));
+    anim1->setEasingCurve(QEasingCurve::OutBounce);
+    anim1->start();
+
+注意，新增的第四句。并且试试其它曲线参数，然后运行，看到的动态效果是不是不一样了。如果你对列表里已经有的曲线都不满意，你还可以继承QEasingCurve，实现你需要的效果。
+
+
+第三决:QAnimationGroup
+前面的例子是只有一个动画在运行，如果想多个动画一起运行的话，那就要用到动画组QAnimationGroup了。动画组分为两种分别为串行和并行，对应于QAnimationGroup的两个子类QSequentialAnimationGroup和QParallelAnimationGroup。其用法很简单
+    QSequentialAnimationGroup group;
+    //QParallelAnimationGroup group;
+    group.addAnimation(anim1);
+    group.addAnimation(anim2);
+    group.start();
+
+上面的代码，如果是串行的话，那么动画anim1运行之后，才会运行anim2。如果是并行的话，两个动画是同时运行的。如果加了动画组，那么单个anim1->start()就没必要再单独调用了，由动画组来管理。 下面是一个可运行的代码，两只小鸟分别从窗体左上角和右下角移动到中间。
+#include <QApplication>
+#include <QWidget>
+#include <QLabel>
+#include <QPixmap>
+#include <QPropertyAnimation>
+#include <QSequentialAnimationGroup>
+#include <QParallelAnimationGroup>
+
+int main(int argc,char *argv[]){
+    QApplication app(argc,argv);
+    QWidget *w=new QWidget();
+    w->resize(300,400);
+
+    QPixmap birdimg=QPixmap("twitter-bird.png").scaled(40,40);
+
+    QLabel *bird_1=new QLabel(w);
+    bird_1->setPixmap(birdimg);
+
+    QPropertyAnimation *anim1=new QPropertyAnimation(bird_1, "pos");
+    anim1->setDuration(2000);
+    anim1->setStartValue(QPoint(0, 360));
+    anim1->setEndValue(QPoint(110, 180));
+    //anim1->setEasingCurve(QEasingCurve::OutBounce);
+    anim1->start();
+
+    QLabel *bird_2=new QLabel(w);
+    bird_2->setPixmap(birdimg);
+
+    QPropertyAnimation *anim2=new QPropertyAnimation(bird_2, "pos");
+    anim2->setDuration(2000);
+    anim2->setStartValue(QPoint(0, 0));
+    anim2->setEndValue(QPoint(150, 180));
+    anim2->setEasingCurve(QEasingCurve::OutBounce);
+
+    QSequentialAnimationGroup group;
+    //QParallelAnimationGroup group;
+    group.addAnimation(anim1);
+    group.addAnimation(anim2);
+    group.start();
+
+    bird_1->move(-40,-40);
+    bird_2->move(-40,-40);
+    w->show();
+    return app.exec();
+}
+
+最后罗唆一下，这代码要用在qt-4.6环境下运行:)
+
+
+

@@ -1,0 +1,64 @@
+QProcess类的作用是启动一个外部的程序并与之交互。
+
+预备知识:
+         int main(int argc, char **argv)
+         其实这个进程带的参数可以看做是 char *arg[argc]，看好了，是指针数组，不是数组。
+
+1. QProcess可以用于执行cmd的命令：
+(调用rar.exe来打包压缩direct1目录和test.txt，生成test.rar)
+	QProcess p;
+	QString command = "E:/test_rar_course/rar.exe";
+	QStringList args; //这个等价于上面说的char *arg[argc]
+	args.append("a");
+	args.append("-k");
+	args.append("-r");
+	args.append("-s");
+	args.append("-m1");
+	args.append("E:/test_rar_course/test.rar");
+	args.append("E:/test_rar_course/direct1/");
+	args.append("E:/test_rar_course/test.txt");
+	p.execute(command,args);//command是要执行的命令,args是参数
+	p.waitForFinished();
+	qDebug()<<QString::fromLocal8Bit(p.readAllStandardError());
+	p.readAllStandartOutput();		//读取命令执行的输出值
+
+1.1 QProcess调用Python脚本 : 
+    QProcess p;
+    p.start("python F:/123.py 999");		//必须用start, 用execute则read不到
+    p.waitForFinished();
+    QByteArray array1 =  p.readAllStandardOutput();	//标准输出的文本
+    qDebug()<< QString::fromLatin1(array1.data());
+    p.close();
+
+
+
+2. QProcess可以用于启动外面的程序：（直接调用静态函数即可）
+        QProcess::execute() 启动一个进程，然后等待该进程结束。
+        QProcess::startDetached() 启动一个进程，然后使其和当前进程脱离进程的父子关系。
+
+
+3. QProcess用于杀进程。
+	QProcess::kill()；
+
+
+4. QProcess可以用于设置环境变量：
+	QProcess process;
+	QProcessEnvironment env;
+	env.insert("PATH", "/home/dbzhang800");
+	process.setProcessEnvironment(env);
+	process.start("./process");
+         
+
+
+僵尸进程：一个子进程在其父进程还没有调用wait()或waitpid()的情况下退出。这个子进程就是僵尸进程。
+孤儿进程：一个父进程退出，而它的一个或多个子进程还在运行，那么那些子进程将成为孤儿进程。孤儿进程将被init进程(进程号为1)所收养，并由init进程对它们完成状态收集工作。
+PS: 僵尸进程将会导致资源浪费，而孤儿则不会。
+
+QProcess::startDetached()在Unix创建的是一个孤儿进程。
+
+QtConcurrent::xxx :调用系统多核来处理xxx函数.
+QtConcurrent::run:启动一个线程来执行一个函数.
+Concurrent的英文示意就是并发的意思.
+
+qApp->processEvents(); //保证GUI依旧响应
+

@@ -1,0 +1,143 @@
+.h:
+
+class Blue_Button : public QPushButton
+{
+    Q_OBJECT
+public:
+    Blue_Button(QWidget *parent=0);
+    /*设置按钮图片*/
+    void setButtonPicture(QPixmap pic);
+    void setPressPicture(QPixmap pic);
+    void setReleasePicture(QPixmap pic);
+    void setMovePicture(QPixmap pic);
+    void setDoublePicture(QPixmap pic);
+    void setEnterPicture(QPixmap pic);
+    void setLeavePicture(QPixmap pic);
+    /*按钮位置大小设置*/
+    void set_X_Y_width_height(int x, int y, int width, int height);
+    /*按钮事件函数*/
+    void mouseDoubleClickEvent(QMouseEvent *event);
+    void mousePressEvent (QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent (QMouseEvent *event);
+    void enterEvent(QEvent *event);
+    void leaveEvent(QEvent *event);
+private:
+    /*按钮图片对象*/
+    QPixmap *buttonPicture;
+    QPixmap *pressPicture ;
+    QPixmap *releasePicture;
+    QPixmap *movePicture;
+    QPixmap *doublePicture;
+    QPixmap *enterPicture;
+    QPixmap *leavePicture;
+ signals:
+    void leftclick();
+
+};
+
+
+cpp:
+
+#include <blue_image_button.h>
+
+Blue_Button::Blue_Button(QWidget *parent) : QPushButton(parent)
+{
+    //保存图片成员初始化
+    buttonPicture = new QPixmap();
+    pressPicture = new QPixmap();
+    releasePicture = new QPixmap();
+    movePicture  = new QPixmap();
+    doublePicture =new QPixmap();
+    enterPicture =new QPixmap();
+    leavePicture= new QPixmap();
+
+    //关闭按钮的默认显示
+    this -> setFlat(true);
+}
+
+void  Blue_Button::setButtonPicture(QPixmap pic)
+{
+    *buttonPicture = pic;
+    this -> setIcon(QIcon(*buttonPicture));
+}
+void Blue_Button::setEnterPicture(QPixmap pic)
+{
+    *enterPicture =pic;
+}
+void Blue_Button::setLeavePicture(QPixmap pic)
+{
+    *leavePicture =pic;
+}
+void  Blue_Button::setPressPicture(QPixmap pic)
+{
+    *pressPicture = pic;
+}
+
+void  Blue_Button::setReleasePicture(QPixmap pic)
+{
+    *releasePicture = pic;
+}
+void  Blue_Button::setMovePicture(QPixmap pic)
+{
+    *movePicture = pic;
+}
+void  Blue_Button::setDoublePicture(QPixmap pic)
+{
+    *doublePicture = pic;
+}
+void  Blue_Button::set_X_Y_width_height(int x, int y, int width, int height)
+{
+    this -> setIconSize(QSize(width, height));
+    this -> setGeometry(x, y, width, height);
+}
+
+main:
+
+    butt1->setButtonPicture(image1W);
+    butt1->setReleasePicture(image1W);
+    butt1->setPressPicture(image1B);
+    butt1->setDoublePicture(image1B);
+    butt1->setMovePicture(image1B);
+    butt1->setEnterPicture(image1D);
+    butt1->setLeavePicture(image1W);
+    butt1->set_X_Y_width_height(400,100,image1B.width(),image1B.height());
+    butt1->setObjectName("button1");
+
+
+void  Blue_Button::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    this -> setIcon (QIcon(*doublePicture));
+}
+
+void  Blue_Button::mousePressEvent (QMouseEvent *event)
+{
+    if(event->button()==Qt::LeftButton)
+    this -> setIcon (QIcon(*pressPicture));
+}
+
+void  Blue_Button::mouseMoveEvent(QMouseEvent *event)
+{
+    this-> setIcon(QIcon(*movePicture));
+}
+
+void  Blue_Button::mouseReleaseEvent (QMouseEvent *event)
+{
+
+    if((event->button()&Qt::LeftButton)==1)
+    {
+       emit leftclick();
+       this -> setIcon(QIcon(*releasePicture));
+    }
+}
+void Blue_Button::enterEvent(QEvent *event)
+{
+    this-> setIcon(QIcon(*enterPicture));
+    QSound music2("Button10.wav");
+    music2.setLoops(10);
+    music2.play();
+}
+void Blue_Button::leaveEvent(QEvent *event)
+{
+    this-> setIcon(QIcon(*leavePicture));
+}

@@ -1,0 +1,13 @@
+/*关于toolbutton的图片按钮*/ 
+
+   QToolButton mytoolbutt(w);
+    mytoolbutt.setText("NARUTO");
+    QPixmap mypixmap("b2b.png");    
+    mytoolbutt.setIcon(mypixmap);	//或者直接 mytoolbutt.setIcon(QPixmap("b2b.png"));
+    mytoolbutt.setIconSize(mypixmap.size());	//设置图片大小
+    mytoolbutt.setAutoRaise(true);		//鼠标进入该button会Raise出来
+    mytoolbutt.setToolButtonStyle(Qt::ToolButtonTextUnderIcon);	//text位于图片下方
+
+    QPalette pe2;				//创建调色板
+    pe2.setColor(QPalette::ButtonText, QColor(255,0,0));//注意"ButtonText",红色
+    mytoolbutt.setPalette(pe2);			//toolbutt采用此text颜色

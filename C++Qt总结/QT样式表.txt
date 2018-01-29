@@ -1,0 +1,114 @@
+Qt帮助n--索引--查找--Qt Style Sheets Reference
+		 Qt Style Sheets Examples
+
+qApp->setStyleSheet("xxxxx"); //全局设置样式表,qApp是宏,前面include下QApplication即可
+
+mydialog->setStyleSheet("QDialog{background-color:green}"); //只有对话框的背景变绿色
+mydialog->setStyleSheet("QPushButton{background:red}"); //mydialog里面所有button全部变红
+mydialog->setStyleSheet("background-color:green");         //整个对话框包括框内按钮的背景也绿了
+mydialog->setStyleSheet("QObject{background-color:green}");  //整个对话框包括框内按钮的背景也绿了
+
+QLineEdit {background:yellow}  
+QCheckBox { color: red }
+
+1.样式表中 { } 前面的那个类是选择器selector,也就是被 { } 影响到的范围.
+selector类及其子类及其孙类都会受到样式的影响;
+selector后面加个">",则子类会受到影响, 但孙类不会;
+(这里是子类孙类就是class, 不是生命周期的子孙)
+
+2.几个<selector>可以同时被列出，使用逗号","来分开各个<selector>，eg：
+	QPushButton, QLineEdit, QComboBox { color: red }
+
+3. ":"后面的是前面的一个状态, 如pressed,hover; 
+   "::"后面是前面的一个部件, 如down-arrow是QComboBox的一个箭头部件;
+
+4. "."就是一点, 只匹配本类, 不含后代;
+	.QDialog{color : red}; //子孙都不会受影响
+	
+
+5."#"具有指定ID的作用，即指定objectname：
+QPushButton[objectName=btn1]{color : red}; //指定objectname为btn1的button
+QPushButton#btn1{color : red};		     //功能同上句
+
+6. 空格为后代选择器:
+	QDialog QPushButton{color : red};	//匹配属于QDialog(或其子孙类)的QPushButton所有实例
+					//这里的QPushButton是QDialog生命周期上的孩子
+
+7. setStyleSheet是覆盖型的, 后面一句会完全覆盖前面那句;
+
+8. 样式表的设置尽量等控件全部初始化完后再设置，不然一些控件的初始化话setXXX可能会覆盖掉
+你的样式表，虽然不知道哪些会，但是要注意。如果是用qApp->setStyleSheet则须注意等所有所有
+的控件全部初始化了，再进行全局样式表的设置。总之，越往后设置样式表越好。
+
+
+
+
+    setStyleSheet("background-image:url(:/folder/show.bmp);");//设置背景图片
+    setStyleSheet("QFrame#My_First{border-image:url(main.jpg)}");
+
+     border: 2px solid grey;
+     border-radius: 5px;	//边缘椭圆化
+     border-image:url(:/images/a/4.png);
+
+
+QProgressBar {
+     border: 2px solid grey;
+     border-radius: 5px;
+ }
+
+ QProgressBar::chunk {
+     background-color: #05B8CC;
+     width: 20px;
+ }
+
+/*********************************************************************************************/
+/*************************************好用的样式表******************************************/
+/*********************************************************************************************/
+QPushButton{
+	color: black;		 //text颜色
+	border: 2px gray;  		 //边框宽2px颜色灰色
+	background:rgb(183,203,188);   //按钮的背景色
+	background-image:url("btnIcon.png");
+	border-radius: 8px;	 	//四角圆弧
+	margin-bottom:6px;		//向上偏移6px
+}
+QPushButton:hover{
+	border-color:rgb(183,203,188);  //hover在按钮上时的颜色
+}
+QPushButton:pressed{
+	border-color:rgb(111,222,33);   //press按钮的颜色
+}
+
+QPushButton:disabled{ //临时的,当button变回enable时会恢复normal状态
+	color: rgb(0,100,256);
+}
+QPushButton[enable=false]{ //永久的,当button变回enable时也不会恢复normal状态
+	color: rgb(0,100,256);
+}
+
+QTabWidget::pane{border: 1px; }
+QTabBar::tab:hover{background:rgb(255,255,255); }
+
+QLineEdit{
+   color: blue;
+   background-color: yellow;
+   selection-color: yellow;
+   selection-background-color: blue;
+}
+
+字体的样式:
+color: #FFFFFF 字体设置为黑色
+font: bold; 是否粗体显示
+border-image: shuoGG.jpg; 用来设定边框的背景图片。
+border-radius:5px; 用来设定边框的弧度。可以设定圆角的按钮
+border-width: 1px； 边框大小
+font-family:微软雅黑; 来设定字体所属家族，
+font-size:20px; 来设定字体大小
+font-style:mystyle; 来设定字体样式
+font-weight:20px; 来设定字体深浅
+background-color: green; 设置背景颜色
+background:transparent; 设置背景为透明
+color:rgb(241, 70, 62); 设置前景颜色
+selection-color:rgb(241, 70, 62); 用来设定选中时候的颜色
+
+

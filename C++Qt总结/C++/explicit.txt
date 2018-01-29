@@ -1,0 +1,17 @@
+explicit: 加在构造函数前面
+class A
+{
+  public:
+   	explicit A(int n)
+	{
+	 cout<<n<<endl;
+	}
+};
+
+//加explicit的构造函数要求User必须用显式构造函数,而不能用隐式
+
+main()
+{
+	A a1;           //错误,
+	A a1(100);   //正确
+}

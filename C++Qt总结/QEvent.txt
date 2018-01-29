@@ -1,0 +1,57 @@
+1.例子
+int shuoGGTimerID;
+
+void shuoGGwidget::showEvent(QShowEvent *event)
+{
+	shuoGGTimerID=startTimer(30);
+	//int startTimer(int n) 是QObject的方法,会返回该时间间隔对应的TimerID以识别不同定时器
+	//该句表示时间间隔为30ms,timerID为shuoGGTimerID
+}
+//时间事件
+void shuoGGwidget::timerEvent(QTimerEvent *event)
+{
+	if(event->timerID()==shuoGGTimerID)
+	{
+		//每过30ms执行一次
+	}
+	if(event->timerID()==其他时间间隔的ID)
+	{
+		killTimer(shuoGGTimerID); //可以停止ID所对应的事件时间定时器	
+	}
+}
+
+2.installEventFilter
+void QObject::installEventFilter(QObject * filterObj)
+
+mywidget->installEventFilter(titlewidget);  //给titlewidget安装事件过滤器
+mywidget触发事件后先把事件交给titlewidget处理，
+如果titlewidget的event虚函数返回true，则mywidget则不处理事件了；
+如果titlewidget的event虚函数返回非true，则mywidget继续处理刚触发的事件；
+
+举个例子：
+mywidget->installEventFilter(titlewidget);
+mywidget->resize(100,100);
+mywidget->focus();
+void MyWidget::resizeEvent(QResizeEvent *e)
+{
+	myfunc1();
+}
+void MyWidget::focusInEvent(QFocusEvent *)
+{
+	myfunc2();
+}
+bool TitleWidget::eventFilter(QObject *obj, QEvent *event)
+{
+     if((int)event->type()==QEvent::Resize){
+	return true;
+    }
+    else{
+	return false;
+    }	
+}
+运行结果: myfunc1()不执行.
+               myfunc2()执行
+
+
+
+

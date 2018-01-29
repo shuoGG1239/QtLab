@@ -1,0 +1,39 @@
+1.重绘的只是背景:
+paintEvent影响的只是该widget的背景而已,上面的label并不会被paintEvent()所覆盖;
+
+void myWidget::paintEvent(QPaintEvent * event)
+{
+    QPainter painter(this);
+    painter.drawPixmap(0, 0, this->width(), this->height(), *mypixmap);
+    painter.drawText(100,100,QString::number(num));
+}
+/*
+painter的drawPixmap()和drawText()只是重绘了myWidget的背景而已.
+myWidget的子部件不会变化,更不会被paintEvent所覆盖.
+*/
+
+2.paintEvent()要用update()来更新绘图, update()是个槽函数哦.
+
+3.paintEvent的状态机属性
+总之就是在"要draw的东西"被画上之前,属性要设好,draw完之后,之前属性就没了回到默认
+eg:
+	(1)这种情况图片和文字都是半透明
+{
+    painter.setOpacity(0.5);
+    painter.drawPixmap(0, 0, this->width(), this->height(), *mypixmap);
+    painter.setOpacity(0.5);
+    painter.drawText(100,100,"HEHE");
+}
+
+	(2)这种情况只有图片是半透明
+{
+    painter.setOpacity(0.5);
+    painter.drawPixmap(0, 0, this->width(), this->height(), *mypixmap);
+    painter.drawText(100,100,"HEHE");
+}
+	(3)这种情况只有文字是半透明
+{
+    painter.drawPixmap(0, 0, this->width(), this->height(), *mypixmap);
+    painter.setOpacity(0.5);
+    painter.drawText(100,100,"HEHE");
+}

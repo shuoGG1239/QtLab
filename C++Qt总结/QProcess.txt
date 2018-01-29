@@ -1,0 +1,4 @@
+QProcess::startDetached(QString url)  //启动一个外部exe, 生命周期独立 (非阻塞)
+
+QProcess::start(QString url)          //启动一个外部exe, 非阻塞式
+QProcess::execute(QString url)     //启动一个外部exe, 阻塞式

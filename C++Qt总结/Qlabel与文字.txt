@@ -1,0 +1,38 @@
+字体库的添加:
+#include <QFontDatabase>
+    QFontDatabase::addApplicationFont("方正卡通简体.ttf");
+    QFontDatabase::addApplicationFont("方正准圆简体.ttf");
+
+
+1.实例:
+显示白色"方正准圆简体"字体的"问题1: 2014年的四大撕逼人物分别有哪四个?"
+
+    label_question=new QLabel(this);		//this是widget父窗体
+    QPalette pe;				//调色板对象
+    pe.setColor(QPalette::WindowText,Qt::white);	//调色板改变label的字色
+    QFont font_ques("方正准圆简体");		//字体对象
+    font_ques.setPointSize(20);			//字体大小
+    label_question->setFont(font_ques);		//label采用该字体对象
+    label_question->setAlignment(Qt::AlignTop);	//label里的部件顶部对齐
+    label_question->setGeometry(80,80,600,300);	//label的几何设置
+    label_question->setWordWrap(true);		//label里的文字自动换行
+    label_question->setPalette(pe);		//label采用该调色板对象
+    setStyleSheet("background-color:blue;");  	//设置背景颜色
+    setStyleSheet("background-image:url(:/folder/show.bmp);");//设置背景图片
+    label_question->setText("问题1: 2014年的四大撕逼人物分别有哪四个?");
+
+2.用html语言来设置文字参数:
+
+    QLabel text1("<h2><strong><font color=white size=4 face=微软雅黑>开始游戏</font></strong>-<font color=#ffffff>START</font></h2>",frame1);
+    text1.setGeometry(50,50,300,100);
+    text1.adjustSize();              //让label自适text的大小
+
+
+3.label 与内容的互相适应
+
+/*内容适应label大小*/
+mylabel->setScaledContents(true); //label变大, 里面的内容跟着变小
+
+/*label大小适应里面的内容*/
+mylabel->adjustSize(); 	//label里面的东西变大,label跟着变大
+

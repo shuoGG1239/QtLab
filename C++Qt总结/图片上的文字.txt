@@ -1,0 +1,29 @@
+重载了QPushButton，对于QCustButton.cpp文件中的paintevent事件重写如下，就可以同时绘制图片和显示文字了。
+
+void QCustButton::paintEvent(QPaintEvent *event)
+{
+    QPushButton::paintEvent(event) ;
+    QPainter painter(this) ;
+    QPixmap pixmap("open.xpm");
+  painter.drawPixmap(10,10,pixmap,50,50,50,50);   
+  painter.drawText(rect(),Qt::AlignCenter,"Button");
+  return ;
+}
+
+
+
+
+QCustLabel::QCustLabel(QWidget *parent):QLabel(parent)
+{
+
+   setPixmap(QPixmap(QString::fromUtf8(":/images/square.png"))) ;
+    text="001";
+}
+
+void QCustLabel::paintEvent(QPaintEvent *event)
+{
+    QLabel::paintEvent(event) ;
+    QPainter painter(this) ;
+    painter.drawText(QPoint(5,25),text);
+    return ;
+}

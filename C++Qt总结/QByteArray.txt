@@ -1,0 +1,7 @@
+clear()  //清空数据 包括resize(0)
+
+void truncate(int pos) //断后   chop(array.size()-n)=truncate(n)
+void chop(int n)  //断后(将n位开始的byte清除掉)
+mid(int startpos, int len) //截取
+
+append(QByteArray newarray)  //增

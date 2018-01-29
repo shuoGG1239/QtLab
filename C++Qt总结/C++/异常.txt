@@ -1,0 +1,55 @@
+try			             //throw是在try里面
+{被检查的语句}                                       //就算是一句,花括号也不能省
+catch（异常信息类型  变量名）             //如catch(int a)
+{进行异常处理的语句}                            //一个try可以多个catch
+
+
+#include <iostream>
+#include <cmath>
+using namespace std;
+void main()
+{
+double triangle（double,double,double）;
+double a,b,c;
+cin>>a>>b>>c;
+   try				//在try块中包含要检查的函数
+   {
+     while（a>0 && b>0 && c>0）
+    {
+     cout<<triangle（a,b,c）<<endl;
+     cin>>a>>b>>c;
+    }
+   }
+
+  catch（double）			 //用catch捕捉异常信息并作相应处理
+  {
+   cout<<″a=″<<a<<″,b=″<<b<<″,c=″<<c<<″,that is not a triangle!″<<endl;
+  }
+   cout<<″end″<<endl;
+}
+
+double triangle（double a,double b,double c） //计算三角形的面积的函数
+{
+  double s=（a+b+c）/2;
+  if （a+b<=c||b+c<=a||c+a<=b） 
+  throw a; 			              //当不符合三角形条件抛出异常信息
+  return sqrt（s*（s-a）*（s-b）*（s-c））;
+}
+
+
+（1） 首先把可能出现异常的、需要检查的语句或
+程序段放在try后面的花括号中。
+（2） 如果在执行try块内的语句过程中没有发生异常，则catch子
+句不起作用，流程转到catch子句后面的语句继续执行。
+（3） 如果在执行try块内的语句（包括其所调用的
+函数）过程中发生异常，则throw运算符抛出一个
+异常信息。throw抛出异常信息后，流程立即离开
+本函数，转到其上一级的函数（main 函数）。
+throw抛出什么样的数据由程序设计者自定，可以
+是任何类型的数据。
+（4） 这个异常信息提供给try-catch结构，系统会
+寻找与之匹配的catch子句。
+（5） 在进行异常处理后，程序并不会自动终止，
+继续执行catch子句后面的语句。
+由于catch子句是用来处理异常信息的，往往被称
+为catch异常处理块或catch异常处理器。

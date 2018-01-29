@@ -1,0 +1,12 @@
+
+eg:
+    //this==>QWidget
+    mytoolbar=new QToolBar("toolbar",this);
+
+    action1=new QAction(mytoolbar);
+    action1->setIcon(QIcon("1.png"));
+    connect(action1,SIGNAL(triggered()),this,SLOT(showquest()));//µã»÷ÊÂ¼þ
+    action2=new QAction(mytoolbar);
+    action2->setIcon(QIcon("2.png"));
+    mytoolbar->addAction(action1);
+    mytoolbar->addAction(action2);

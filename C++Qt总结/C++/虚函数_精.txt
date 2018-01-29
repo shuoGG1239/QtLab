@@ -1,0 +1,63 @@
+1.虚函数在基类已经实现了,和普通函数的区别之处看下面的例子.
+
+2.纯虚函数则在基类没有实现,只能在子类中实现.
+
+3.带纯虚函数的类叫做抽象类
+
+4.纯虚函数说白了就是java的接口函数(抽象函数).
+例如 java的button要implement个ActionListener来实现actionPerformed这个接口函数
+来实现按键的响应.
+这里的actionPerformed()就相当于c++的纯虚函数.
+也即该函数在基类留空，一律在子类中实现。这个按键按下去会发生啥，我作为设计者不知道，那我就
+留给用户设计吧，但我又得指引用户去察觉确实有个函数是用来填写按键事件的，故我还得留个空洞来
+提醒用户，这个空洞就是接口or虚函数了。这就是虚函数or接口的应用场景。
+
+5.virtual的函数又称为方法;
+
+6.当一个类存在virtual函数时，必须把析构也virtual了，不然子类的析构将无法使用；
+
+7.virtual函数在头文件声明了的话，cpp就不用加virtual了；
+
+8. 在头文件  virtual void cry() =0;  则该虚函数不用在cpp写实现了, 是纯虚函数;
+
+9.纯虚函数在子类必须全部实现;
+
+
+
+*******************虚函数的经典例子:（仔细看助于理解）*******************
+class Father
+{
+public:
+    char *name;
+    int age;
+    virtual void cry()   //虚函数
+    {
+        cout<<"FaFaFa";
+    }
+};
+
+class Child:public Father
+{
+public:
+    int grade;
+    virtual void cry()   //虚函数
+    {
+        cout<<"ChiChiChi";
+    }
+};
+
+int main()
+{
+    Father fa1;
+    Child child1;
+    Father *pFa1=&fa1;
+    pFa1->cry();
+    pFa1=&child1;
+    pFa1->cry();
+}
+输出结果:FaFaFaChiChiChi
+若把两个虚函数的virtual去掉，也即变为普通函数，则输出结果为：FaFaFaFaFaFa
+
+
+
+

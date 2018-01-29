@@ -1,0 +1,12 @@
+QListWidget list;
+list.addItem("myitem1");
+list.addItem("myitem2");
+list.addItem("myitem3");
+list.addItem("myitem4");
+
+
+list.item(0)->text();   //第一行的text
+list.count();	 //总行数
+
+
+list.clear();  //清空

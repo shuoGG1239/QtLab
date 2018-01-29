@@ -1,0 +1,31 @@
+参考工程:
+	decodeClass
+	decode.cpp
+	//直接使用此封装函数即可
+   	 void getFilesBySuffix(const QString &fileurl, const QString &suffixStr, QStringList &fileUrlList);
+
+
+
+    QByteArray datatransformed;
+    QTextCodec *srcStyle = QTextCodec::codecForName("GBK");
+    QTextCodec *dstStyle = QTextCodec::codecForName("UTF-8");
+    datatransformed=dstStyle->fromUnicode(srcStyle->toUnicode(data));
+
+/**
+ * @brief 编码类型转换(转换类型不限,类型为字符串,是近似匹配,所以也不用太纠结)
+ *
+ * @param data  被转换的数据
+ * @param srcCodestyle 源数据类型
+ * @param dstCodestyle 目标数据类型
+ * @return QByteArray  转换完的数据
+ */
+QByteArray Decode::codeTransform(QByteArray &data,
+                             const QString &srcCodestyle, const QString &dstCodestyle)
+{
+    QByteArray datatransformed;
+    //codecForName实例不用手动delete,QTextCodec在析构函数已将其销毁(我猜)
+    QTextCodec *srcStyle = QTextCodec::codecForName(srcCodestyle.toLatin1());
+    QTextCodec *dstStyle = QTextCodec::codecForName(dstCodestyle.toLatin1());
+    datatransformed=dstStyle->fromUnicode(srcStyle->toUnicode(data));
+    return datatransformed;
+}

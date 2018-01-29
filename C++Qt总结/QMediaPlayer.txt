@@ -1,0 +1,10 @@
+
+
+     musiclist = new QMediaPlaylist;
+//     musiclist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);  //循环当前曲子
+     musiclist->addMedia(QUrl("sheep.wav"));
+     music1=new QMediaPlayer;
+     music1->setPlaylist(musiclist);
+  //   musiclist->setCurrentIndex(0);   //切换曲子:0~n
+     music1->setVolume(80);
+     music1->play();

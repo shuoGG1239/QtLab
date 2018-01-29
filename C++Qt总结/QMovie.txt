@@ -1,0 +1,8 @@
+/*GIF播放*/ 
+
+   QLabel movielabel(frame1);
+    QMovie movie("newTzuGiKo.gif");
+    movie.start();
+    movielabel.setMovie(&movie);
+    movielabel.setGeometry(665,405,130,195);
+    movielabel.setScaledContents(true);                 //图片自动拉伸到和label大小一样

@@ -1,0 +1,46 @@
+#include <QTabWidget>
+
+
+    QTabWidget *tabWidget=new QTabWidget();
+    QWidget *tab1;     //页窗体1
+    QWidget *tab2;   //页窗体2
+    QWidget *ui1;   //页窗体2
+    tab1 = new QWidget();
+    tab2 = new QWidget();
+    ui1   = new QWidget(tab1);
+
+    tabWidget->resize(515, 185);	
+    tab1->resize(tabWidget->size());	
+    tabWidget->addTab(tab1, QString()); //QString()表示空字符串
+    tabWidget->addTab(tab2, "Tab2");
+
+    tabWidget->setTabText(TabWidget->indexOf(tab1), 
+		         QApplication::translate("TabWidget", "Tab1", 0));
+    tabWidget->show();
+
+    //ui1在page的居中显示
+    ui1->move((tab1->width()-ui1->width())/2,
+                      (tab1->height()-ui1->height()-tabWidget->tabBar()->height())/2);
+
+
+Qss:
+QTabWidget::pane{
+	border:none;
+}
+QTabWidget::tab-bar{  //tab-bar只一整条
+        alignment:left;
+}
+QTabBar::tab{            //tab指一整条中的其中一小段, 即按钮
+	background:transparent;
+	color:white;
+	min-width:30ex;
+	min-height:10ex;
+}
+QTabBar::tab:hover{
+	background:rgb(255, 255, 255, 100);
+}
+QTabBar::tab:selected{
+	border-color: white;
+	background:white;
+	color:green;
+}

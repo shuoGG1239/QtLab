@@ -1,0 +1,39 @@
+QT       += multimedia
+
+
+    QSound music1("naruto.wav");
+    music1.setLoops(INFINITE);
+    music1.play();
+
+/*************QSoundµÄ¼Ì³Ð***************/
+class newmusic : public QSound
+{
+    Q_OBJECT
+public:
+    newmusic(const QString& filename, QObject* parent=0):QSound(filename,parent)
+    {
+
+    }
+    int musicflag;
+
+public slots:
+    void music_switch()
+    {
+        switch(musicflag)
+        {
+        case 0:this->stop();this->musicflag=1;break;
+        case 1:this->play();this->musicflag=0;break;
+        }
+    }
+};
+
+Ö÷º¯Êý:
+main()
+{
+    newmusic music1("sheep.wav");
+    music1.setLoops(-1);
+    music1.play();
+    music1.musicflag=0;
+    QObject::connect(butt4,SIGNAL(clicked()),&music1,SLOT(music_switch()));
+}
+

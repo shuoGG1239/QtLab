@@ -1,0 +1,51 @@
+
+滚动文字实例:
+/************************ 滚动文字头文件****************************/
+#ifndef TTT_H
+#define TTT_H
+#include <QString>
+#include <QApplication>
+#include <QTimer>
+#include <QWidget>
+#include <QLabel>
+class mywidget:public QWidget
+{
+   Q_OBJECT
+public:
+    mywidget(QWidget *parent=0):QWidget(parent)
+    {
+      label=new QLabel(this);
+      label->setGeometry(100,100,200,400);
+      label->setWordWrap(true);
+    }
+    unsigned int pos;
+    std::string temp_str;   //string类的对象temp_str
+    QLabel *label;
+public slots:
+    void TimerOut()
+    {
+        if(pos>temp_str.length())
+        {
+            pos=0;
+        }
+        label->setText(temp_str.substr(0,pos).c_str());  //pos越大显示越多;substr()返回string,c_str()返指针
+        pos++;			             //显示多一个字节
+    }
+};
+#endif // TTT_H
+
+/**************************滚动文字主函数****************************/
+#include "ttt.h"
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    mywidget w;
+
+    QTimer *timer=new QTimer(&w);
+    QObject::connect(timer,SIGNAL(timeout()),&w,SLOT(TimerOut()));
+    timer->start(60);
+    w.temp_str="好好学习天天向上1233333333333333萨达哈就收到货sss阿斯顿撒旦";
+    w.pos=0;
+    w.show();
+    return a.exec();
+}

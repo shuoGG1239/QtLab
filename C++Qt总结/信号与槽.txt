@@ -1,0 +1,115 @@
+*在槽函数new的出来的东西(没有在构造函数new的),必须手动show().
+*同一个connect语句(一模一样),执行两次不是覆盖效果,而是增加多一次connect,所以要谨慎!
+*在本类中emit signal实质应该写成 emit this->signal 比较合理些.
+在A类中发送B类的某个信号:  emit ob_b->signal;
+
+
+信号与槽:之间可以一对多,多对一,多对多
+1.通常例子:
+class newframe1 : public QFrame
+{
+    Q_OBJECT
+public:
+    newframe1(QWidget* parent=0) : QFrame(parent)
+    {  }
+    int backgroundflag;
+    void keyPressEvent(QKeyEvent *e)
+    {
+        if (e->key() == Qt::Key_Q)
+        {
+            this->setStyleSheet("QFrame#My_First{border-image:url(琪雅酱.jpg)}");
+            emit Qreadypress();         //当按下Q的时候发出readypress的信号
+        }      
+    }
+
+signals:
+    void Qreadypress();     //信号可以自己随便定, 里面可以没内容,仅仅当做一个标志供emit就行  
+};
+
+
+main()
+{
+
+	newframe1 * frame1=new newframe1;
+	newmusic music1("sheep.wav");
+
+	 QObject::connect(frame1,SIGNAL(Qreadypress()),&music1,SLOT(play()));
+
+	 //形参:    (发出者, 发出了什么, 接收者, 接收后干什么)
+	//"发出了什么"   --统一放发出者所在类的signals:后         
+	//"接收后干什么"--统一放接收者所在类的slots:后
+}
+
+
+********************************************************************
+2.经典案例:
+
+/*在主函数调用类里面的button1来实现信号与槽的实例*/
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    newframe1 frame1;
+    QObject::connect(frame1.butt4,SIGNAL(leftclick()),frame1.music1,SLOT(stop()));  //butt4按下歌停
+    QObject::connect(frame1.butt3,SIGNAL(leftclick()),&frame1,SLOT(stopmusic()));  //butt3按下歌停
+    frame1.show();          //leftclick()和stop()都不是newframe1的信号与槽
+    return a.exec();
+}
+
+class newframe1:public QFrame   //这个类是在头文件的
+{
+    Q_OBJECT
+public:
+       newframe1(QWidget* parent=0);
+       Blue_Button *butt4;
+       newmusic *music1;
+public slots:
+       void stopmusic();
+};
+
+newframe1::newframe1(QWidget* parent=0):QFrame(parent)
+{
+        ....... ......;
+        music1=new  newmusic("sheep.wav");     //music1必须new出来才有操作意义
+	
+}
+
+ void newframe1::stopmusic()
+ {
+     music1->stop();                                       //这个music1必须放在自己new完之后的位置才合法
+ }
+
+*********************************************************************
+3.sender(): 返回发射信号者的指针,在槽函数内部使用
+eg:
+public slots:
+void check_answer()
+{
+    mytoolbutton *buttcheck=(mytoolbutton*)sender();	//强制转换指针
+    if(buttcheck->objectName()==qorder[qnum]->answer)//回答正确
+    {
+        QSound::play("bingo.wav");
+    }
+}
+
+
+*********************************************************************
+4. 将slot作为参数传入: 
+SLOT()这个宏其实是将括号内的函数按一定规则转化为字符串const char*，
+所以如果想将slot作为输入参数, 可以如下进行: 
+eg:
+
+void MainWindow::init()
+{
+    addToMenu(plugin, iFilter->filters(), filterMenu, SLOT(applyFilter()));
+}
+
+void MainWindow::addToMenu(QObject *plugin, const QString &text,
+                           QMenu *menu, const char *memberslot)
+{
+    QAction *action = new QAction(text, plugin);
+    connect(action, SIGNAL(triggered()), this, memberslot);
+    menu->addAction(action);
+}
+
+ps：
+SIGNAL()和SLOT()原理一样，所以可以按上面的套路将signal也作为参数输入。

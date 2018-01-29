@@ -1,0 +1,101 @@
+QT   += sql
+
+1.普通例子:(只是单数据库连接例子,最下面有多数据库连接的)
+#include <QApplication>
+#include <QDebug>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");//添加数据库驱动
+    db.setDatabaseName("sql123");    //数据库连接命名
+    if(!db.open())
+    {
+        return false;
+    }
+    QSqlQuery query;			//建立对"db"数据库的查询对象
+    query.exec("create table student(id int primary key,name varchar)");
+    query.exec("insert into student values(1,'xiaogang')");
+    query.exec("insert into student values(2,'xiaoming')");
+    query.exec("insert into student values(3,'xiaohong')");
+    query.exec("select id,name from student where id >= 1");
+
+    //query.next()指向查找到的第一条记录，然后每次后移一条记录
+    while(query.next())
+    {
+        //query.value(0)是id的值，将其转换为int型
+        int value0 = query.value(0).toInt();
+        QString value1 = query.value(1).toString();
+        qDebug() << value0 << value1 ;
+    }
+    return a.exec();
+}
+
+2.动态查询:
+//前面有 :  的参数为QT被绑定参数的标志eg: ":name"和":password"字段打包为动态参数
+	QString username;
+	QString pass1;
+	QSqlQuery qry;
+
+	qry.prepare("select * from Table1 where Name = :name and password =:password");
+	qry.bindValue(":name", username);
+	qry.bindValue(":password", pass1);
+	qry.exec();
+
+	qry.first();			//exec()后记得first()或next(),不然value()无效
+	int value0 = qry.value(0).toInt();
+	QString value1 = qry.value(1).toString();
+	QString value3 = qry.value(2).toString();
+
+2.5自创的动态查询
+eg:
+        QString orderChar="asc";
+        query.prepare(tr("select * from student order by stuid %1").arg(orderChar));
+        query.exec();
+
+3.自己写的例子:
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("mysql.db");	//被操作的数据库名或路径
+    db.open();
+    int i;			//动态参数
+    QSqlQuery query;
+    for(i=1;i<=6;i++)		//依次输出id<=6的各列数据
+    {
+    query.prepare("select * from classA where id=:id");
+    query.bindValue(":id",i);	//":id"与 i 的值绑定起来
+    query.exec();		//执行prepare()里的语句
+    query.first();
+    int value0 = query.value(0).toInt();
+    QString value1 = query.value(1).toString();
+    QString value2=query.value(2).toString();
+    qDebug() << value0 << value1 <<value2;
+    }
+    a.quit();
+}
+
+4.多数据库连接
+区别:
+1.QSqlDatabase db1 = QSqlDatabase::addDatabase("QSQLITE","connect1");
+   QSqlDatabase db2= QSqlDatabase::addDatabase("QSQLITE","connect2");
+database构造函数有第二形参,这个字符串可以当做是一个连接名,不同库必须不同连接.
+2.QSqlQuery query1(db1);
+   QSqlQuery query2(db2);
+query查询构造函数形参必须加上对应的database对象.
+
+   至于"connect1","connect2"的作用,看起来没用,但是没他不行.就当做QSqlQuery query1(db1);的识别是靠db1里面的连接名来进行的.
+
+
+5.防止多开
+
+   QSqlDatabase db;    //addDatabase可能有多次
+    if(QSqlDatabase::contains("qt_sql_default_connection"))
+        db = QSqlDatabase::database("qt_sql_default_connection");
+    else
+        db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("userForstuGrade");    //数据库连接命名
+    db.open();

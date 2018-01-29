@@ -1,0 +1,31 @@
+QMap：
+1.QMap提供了一个从类项为key的键到类项为T的直的映射，通常所存储的数据类型是一个键对应一个值，并且按照Key的次序存储数据；
+2.QMultiMap支持一键多值；
+
+QHash：
+1.QHash具有和QMap几乎完全一样的APi，此类维护这一张哈希表，表的大小和数据项是自适应的，QHash是以任意的顺序住址他的数据；
+2.QMultiHash支持一键多值；
+
+两种之间的区别是：
+1. QHash查找速度上显著于QMap；
+2. QHash以任意的方式进行存储，而QMap则是以key顺序进行存储；
+3. QHash 的键类型必须提供operator==()和一个全局的qHash(key)函数，
+   而QMap的键类型key必须提供operator<()函数；
+
+eg：
+    QMap<QString,int> map;  
+    map.insert("Human",1);  
+    map.insert("UD",4);  
+    map["UD"]=10;  //修改"UD"键对应的值
+    int uvalue=map["UD"];  //取值方式一
+    int hvalue=map.value("Human"); //取值方式二
+
+    /*用迭代器遍历map的所有键和值*/
+    QMapIterator<QString,int> iter(map);
+    while(iter.hasNext())
+    {
+        iter.next();  
+        qDebug()<<iter.key();
+        qDebug()<<iter.value();
+    }
+

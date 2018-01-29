@@ -1,0 +1,8 @@
+    bar_for_time=new QProgressBar(this);
+    bar_for_time->setRange(0,60);
+    bar_for_time->setGeometry(70,25,550,25);
+    bar_for_time->setValue(30);
+    bar_for_time->show();
+    bar_for_time->setTextVisible(false);
+    bar_for_time->setStyleSheet("QProgressBar{background-color:#05B8CC;border: 8px white;border-radius: 5px;} QProgressBar::chunk{background-color:#ffffff;width:15px;border-radius: 5px;}");
+//前面是设进度槽的样式,后面(chunk)是设进度条的样式

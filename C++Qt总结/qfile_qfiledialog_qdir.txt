@@ -1,0 +1,82 @@
+Qt的QFileInfoList获取下面所有东东十分坑爹!!!!!!!!!
+	它增加俩玩意: "." ".." --->表示当前目录和上级目录
+	所以需要使用filter:  AllEntries | NoDotAndDotDot   ---->在所有的东东中过滤掉"." 和 ".."
+ QFileInfoList entryList = mydir.entryInfoList(mydir.AllEntries|mydir.NoDotAndDotDot,mydir.NoSort);
+
+Qt的"path"是指不包含本文件的路径;
+我这里说的"全路径"是指包含本文件的路径;
+
+QFileDialog::getExistingDirectory(this);   //获取一个文件夹的全路径, 不加this的话选完窗口会自动最小化
+QFileDialog::getOpenFileName(this);      //获取一个文件的全路径
+QFileDialog::getOpenFileNames(this);     //获取多个文件的全路径, 在filedialog可以框选多个文件
+
+
+#include <QFileInfo>
+#include <qfiledialog.h>
+#include <qfile.h>
+#include <qdir.h>
+#include <qdebug.h>
+
+/*功能: 遍历文件夹的所有文件并打印出来_1*/
+   QString file_fullString, file_name, file_path;
+    file_fullString=QFileDialog::getExistingDirectory(this);  //获取一个文件夹的完整路径,包括本体
+    QFileInfo fi(file_fullString);    		//文件信息,方便分离路径和本体
+    file_name = fi.fileName();         	 //分离出本体的名字
+    file_path = fi.absolutePath();     	 //分离出路径
+    QDir mydir(file_fullString);		//路径对象
+    int stringSize=mydir.entryList(mydir.NoFilter,mydir.NoSort).size(); //文件夹里的文件和目录的总数
+    if(2!=stringSize)	//文件夹包含了当前与上个目录，空文件夹size为2
+    {
+        for(int i=0;i<stringSize-2;i++){
+          //entryList的容器排序(sort)用"或运算"来使用多个排序条件
+            qDebug()<<QString::fromStdString(mydir.entryList(mydir.NoFilter,
+	mydir.Name|mydir.Reversed).at(i).toStdString())<<"\n";
+        }
+    }
+    else {
+        qDebug()<<"Empty StringVector!";
+    }
+
+
+/*功能: 遍历文件夹的所有文件并打印出来_2*/
+        QStringList stringFilter=ui->lineEditFilter->text().split(QRegExp(","));  //按逗号分割string
+        QDir mydir(file_fullString);    //文件夹目录对象
+        mydir.setNameFilters(stringFilter); //设具体类型的过滤器
+        int stringSize=mydir.entryList(mydir.Files,mydir.Name).size(); //文件夹里面的文件数
+        if(0!=stringSize)
+        {
+            QStringList fileStringList=mydir.entryList(mydir.Files,mydir.Name); //文件名列表
+            for(int i=0;i<stringSize;i++)
+            {
+                QString oldFileString=QString::fromStdString(fileStringList.at(i).toStdString());
+                QString newBaseString;
+                QFileInfo fileinfo1(oldFileString);     //file全名转为fileinfo对象,好分离出文件名称和后缀
+                QString basename=fileinfo1.baseName();  //文件名称
+                QString suffixname=fileinfo1.suffix();  //文件后缀
+	newBaseString=ui->lineEdit_Add->text()+basename;
+	qDebug()<<file_fullString+"/"+newBaseString+"."+suffixname<<"\n";
+             }
+         } 
+
+
+/*功能: 选择并改变文件的文件名*/
+file_fullString=QFileDialog::getOpenFileName(this);     //获取一个文件的完整路径,包括本体
+QFile::rename(file_fullString,file_path+"\\"+"shuoGG.txt"); //将获取的文件名改为shuoGG.txt
+/*
+    QFile myfile(file_fullString);   //为获取的文件建立一个qfile对象
+    qDebug()<<myfile.fileName();   
+*/
+
+
+	//重命名例程,给文件名加个 _1
+            QString newfiletxtfulurl,filepath,filebasename,filesuffix,newfilefulurl;
+            QFileInfo fileinfo(oldfilefulurl);
+            filepath=fileinfo.absolutePath();
+            filebasename=fileinfo.baseName();
+            filesuffix=fileinfo.suffix();
+            newfilefulurl=filepath+"\\"+filebasename+"_1."+filesuffix;
+            QFile::rename(oldfilefulurl,newfilefulurl);
+
+
+ps:
+QDesktopServices::openUrl(file_fullString);     //打开windows目录

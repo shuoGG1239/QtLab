@@ -1,0 +1,18 @@
+#include <QSettings>
+#include <qdebug.h> 
+
+
+/* 构造函数:若shuoGG.ini不存在则建立一个，存在则读取那个shuoGG.ini */
+    QSettings mysetting("shuoGG.ini",QSettings::IniFormat);
+//setValue:若 /Name/3112000989 不存在则建立,存在则执行修改
+    mysetting.setValue("/Name/3112000989","Linshuo"); 
+    mysetting.setValue("/Name/3112000990","LinYue");
+    mysetting.setValue("/Address/3112000989","West517");
+    mysetting.setValue("/Address/3112001000","West521");
+    mysetting.setValue("/Age/3112001000", 21);	//setValue会自动将int转为String再存
+
+    mysetting.setValue("/Name/3112000990","LinYue_1");  //修改,覆盖之前的"LinYue"值
+/*读取ini对应值*/
+    QString nameString1=mysetting.value("/Name/3112000989").toString();  
+    qDebug()<<nameString1;
+输出结果: linshuo

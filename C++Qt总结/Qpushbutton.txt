@@ -1,0 +1,53 @@
+*按钮还可以软件触发的!!!
+eg: QPushButton  button1;
+      button1.click(); 		//软件触发点击
+
+ 
+*********************************************************
+/*最直接的方法*/
+   QPushButton * button1=new QPushButton(frame1);
+    button1->setObjectName("b1");
+    button1->setGeometry(400,300,100,100);
+    QIcon icon;
+    QPixmap pixmap0("but1.png");
+    icon.addPixmap(pixmap0);
+    button1->setIcon(icon);
+    button1->setIconSize(QSize(100,100));
+    button1->setFlat(true);                             //透明化
+    button1->setMask(pixmap0.mask());
+    button1->setText("shuoGG");                   //按钮上的text
+    button1-setToolTip("I am shuoGG");         //悬停标签提示
+
+
+
+*******************************************************
+/*x,y为位置,route为按钮图片路径,frame为窗口*/
+QPushButton * shuoGG_Button(int x,int y,QString route,QFrame * frame)
+{
+    QPushButton *tempbutton=new QPushButton(frame);
+    tempbutton->setGeometry(x,y,400,400);        //400,400本质就是个mask
+    tempbutton->clearMask();                            //这句使上一句的400,400可以随便设
+    tempbutton->setBackgroundRole(QPalette::Base);
+    QPixmap tempixmap;
+    tempixmap.load(route);
+    tempbutton->setFixedSize(tempixmap.width(),tempixmap.height());
+    tempbutton->setMask(tempixmap.createHeuristicMask());
+    tempbutton->setIcon(tempixmap);
+    tempbutton->setFlat(true);
+    tempbutton->setIconSize(QSize(tempixmap.width(),tempixmap.height()));
+// tempbutton->setToolTip("shuoGG");  //鼠标停留在按钮显示shuoGG
+    return tempbutton;
+}
+
+main()
+{
+    QPushButton *shuoggbutton_1=shuoGG_Button(300,0,"b1w.png",frame1);
+    shuoggb1->move(0,0);  //可以改变按钮的位置
+}
+
+/*设置快捷键*/
+butt1->setShortcut(QKeySequence("Ctrl+Return"));
+butt2->setShortcut(QKeySequence("Ctrl+R"));
+
+/*鼠标移动到butt1上会显示文字*/
+butt1->setToolTip("快捷键: ctrl+z");

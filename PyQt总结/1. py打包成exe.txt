@@ -1,0 +1,35 @@
+在要打包的同级目录下，新建一个pyinstaller.py，内容如下:
+
+#打包, main函数只在一个py里面, 依赖关系在main的import里面会自动关联构建;
+import  os
+if __name__ == '__main__':
+    from PyInstaller.main import run
+    opts=['shuo_main.py','-F','-w','--icon=favicon.ico']
+    run(opts)
+
+
+
+========================================
+其中opts是参数，将参数修改成你要的需求
+-- 参数说明：
+-F, --onefile , 最后生成一个.exe文件而;
+-D, --onedir, 最后生成是一个目录, 里面有.exe还有Qt的各种依赖包括dll等;
+-K, --tk 包含TCL/TK
+-d, --debug 生成debug模式的exe文件
+-w, --windowed, --noconsole 窗体exe文件(Windows Only)
+-c, --nowindowed, --console 控制台exe文件(Windows Only)
+-o DIR, --out=DIR 设置spec文件输出的目录，默认在PyInstaller同目录
+--icon=<FILE.ICO> 加入图标（Windows Only）
+-v FILE, --version=FILE 加入版本信息文件
+
+将命令行CMD切换切换到当前要打包的目录
+	F:\project\pyqt\TEST>
+输入命令：
+	python pyinstaller.py
+
+编译完目录里面就多出两个文件夹build和dist，及文件xxx.spec，其中dist里面就是二进制的打包文件;
+
+生成的exe可以在其他未装python的windows系统上运, 但由于采用64位python及pyinstaller，所以只能在64位系统运行;
+
+
+

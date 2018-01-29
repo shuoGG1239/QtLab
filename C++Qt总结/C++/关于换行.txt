@@ -1,0 +1,9 @@
+1.
+平时用  \  就行
+QPropertyAnimation *wodexiaoguo= new \
+QPropertyAnimation (this);
+
+2.
+如果是在"  "里面换行则:
+QString aaa="我家住在黄土"
+"高坡哦哦,哪里不对点哪里";

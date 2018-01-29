@@ -1,0 +1,27 @@
+1.new出来的东西自带全局属性,很强大; 而非new的对象若在函数中定义就只能是局部对象了,不能被其他函数调用;
+2.new出来的指针必须手动用delete销毁,不然会内存泄露
+
+
+new是在堆上创建对象，他保存的地址不会自动销毁，但是如果不用new那么在函数 
+ void func() 
+{ 
+ Student st; 
+ st.name="hello"; 
+} 
+ void main() 
+{ 
+ func(); 
+ cout<<st.name;//错误的调用 
+} 
+st只是局部变量，除了函数st就被销毁了，这样不利于传递参数等，那就得用全局变量了，而new就避免使用全局变量。 
+void func() 
+{ 
+Student *st=new Student; 
+st->name="hello"; 
+} 
+void main() 
+{ 
+func(); 
+cout<<st->name;//正确的调用 
+} 
+注意上门两个程序都是片段还有class Student{};没有声明和定义，只是为了说明问题

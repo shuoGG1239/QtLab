@@ -1,0 +1,63 @@
+undo redo使用了命令模式.
+
+ps: QUndoStack::push(command)时自动执行redo()
+
+
+/**************************************************************************************************/
+eg: undo redo最简使用实例
+---------------------------------------
+class MyCommand : public QUndoCommand
+{
+public:
+    explicit MyCommand(QPushButton *butt, const QPoint &newpoint, QUndoCommand *parent = 0);
+
+    void undo();
+    void redo();
+
+private:
+    QPushButton *tempbutt;
+    QPoint buttposold;
+    QPoint buttposnew;
+};
+----------------------------------------
+#include "mycommand.h"
+MyCommand::MyCommand(QPushButton *butt, const QPoint &newpoint, QUndoCommand *parent) :
+    QUndoCommand(parent)
+{
+    this->tempbutt=butt;
+    this->buttposold=butt->pos();
+    this->buttposnew=newpoint;
+}
+
+void MyCommand::undo()
+{
+    tempbutt->setGeometry(buttposold.x(),buttposold.y(),
+                          tempbutt->width(),tempbutt->height());
+}
+
+void MyCommand::redo()
+{
+    tempbutt->setGeometry(buttposnew.x(),buttposnew.y(),
+                          tempbutt->width(),tempbutt->height());
+}
+--------------------------------------------------------------------
+Widget::Widget(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::Widget)
+{
+    ui->setupUi(this);
+    undoStack = new QUndoStack(this);
+    undoAction = undoStack->createUndoAction(this);
+    undoAction->setShortcut(tr("Ctrl+Z"));
+    redoAction = undoStack->createRedoAction(this);
+    redoAction->setShortcut(tr("Ctrl+Y"));
+    this->addAction(undoAction);
+    this->addAction(redoAction);
+}
+void Widget::on_pushButton_clicked()
+{
+    QPoint newpos(ui->lineEdit->text().toInt(),ui->lineEdit->text().toInt());
+    QUndoCommand *newcommand=new MyCommand(ui->pushButton,newpos);
+    undoStack->push(newcommand);
+}
+

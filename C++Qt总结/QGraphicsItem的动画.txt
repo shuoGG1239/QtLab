@@ -1,0 +1,16 @@
+1.
+当你想动画操作QGraphicsItem时，你也是使用QPropertyAnimation类。然而，QGraphicsItem并不继承于QObject。一个好的解决办法是子类化一个你需要的图形项，同时子类也继承于QObject。使用这种方法，QPropertyAnimation类就能使用于QGraphicsItem中。下面的代码例子展示了这种解决办法。
+
+class myPixmap : public QObject, public QGraphicsPixmapItem
+{
+    Q_OBJECT
+    Q_PROPERTY(QPointF pos READ pos WRITE setPos)
+    ...
+}
+
+注意：QObject必须是第一个继承者，因为出于元对象系统的要求。
+这时myPixmap的对象既可以setPos又可以进行QPropertyAnimation动画,多爽!
+
+
+2.
+另一种可行性是只继承于QGraphicsWidget，因为QGraphicsWidget继承于QObject。

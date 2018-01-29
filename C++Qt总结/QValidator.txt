@@ -1,0 +1,15 @@
+validator验证器是可以附加到输入窗件如QLineedit,QSpinBox和QCombox的不可见对象，能验证用户的输入。
+
+QValidator是一个抽象类，关键方法validator是纯虚函数。
+下面是QValidator的两个实现子类，用于验证int和double：
+eg：
+QIntValidator* ivalid=new QIntValidator(10, 100, this);
+QDoubleValidator* dvalid=new QDoubleValidator(1.1, 1.9,this));
+mylineedit1->setValidator(ivalid); //mylineedit1输入被限制在10到100
+mylineedit2->setValidator(dvalid);//mylineedit2输入被限制在1.1到1.9
+
+
+当然也可以自己写个类实现QValidator的接口, 返回值为枚举值:
+ Invalid           : 不满足
+ Intermediate : 现在不满足,但进一步输入可以产生可接受的结果
+ Acceptable    : 满足

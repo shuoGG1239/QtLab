@@ -1,0 +1,1 @@
+virtual float area£¨ £© const =0;//´¿Ðéº¯Êý

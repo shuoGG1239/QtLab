@@ -1,0 +1,17 @@
+在Qt中，以下情况下你new出的对象你可以不用 亲自去delete (但你应该清楚delete在何处被Qt调用的，怎么被调用的)：
+
+0.QObject及其派生类的对象，如果其parent非0，那么其parent析构时会析构该对象
+除此之外，有些类的对象可以接收设置一些特别的标记，比如：
+
+1.QWidget及其派生类的对象，可以设置 Qt::WA_DeleteOnClose 标志位(当close时会析构该对象)
+2.QAbstractAnimation派生类的对象，可以设置 QAbstractAnimation::DeleteWhenStopped
+3.QRunnable::setAutoDelete()
+4.MediaSource::setAutoDelete()
+...
+
+
+在Qt中，每个 QObject 内部都有一个list，用来保存所有的 children，还有一个指针，保存自己的parent。当它自己析构时，它会将自己从parent的列表中删除，并且析构掉所有的children。
+
+注意：在 Qt 中，我们经常会遇到
+基类、派生类，或父类、子类。 这是对于派生体系来说的，和在C++相关书中看到的完全一样，与这的parent无关
+父对象、子对象、父子关系。 这是Qt中所特有的，也就是这儿的parent所引入的，与类的继承关系无关

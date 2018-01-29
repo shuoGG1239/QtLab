@@ -1,0 +1,12 @@
+关于new的顺序
+eg:
+    animation_tool1 = new QPropertyAnimation(toolselbutt1,"geometry");
+
+则在头文件class中声明时的顺序:
+QToolButton *toolselbutt1;
+QPropertyAnimation *animation_tool1;
+顺序反过来就错了!编译没错但是程序无法运行!!!
+总之:被使用者放在前面!
+
+
+QWidget::setAttribute(Qt::WA_DeleteOnClose);  //窗体close时自动delete

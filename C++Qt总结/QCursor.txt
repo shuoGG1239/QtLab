@@ -1,0 +1,15 @@
+使用setCursor(Qt::CursorShape)来设置鼠标样式:Qt::CursorShape里面有自带的鼠标图库
+
+修改鼠标样式:setCursor
+
+也可以用户自定义鼠标图片:
+
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    newframe1 frame1;
+    QCursor *mycursor1=new QCursor(QPixmap("mycursor.png"),-1,-1);
+    frame1.setCursor(*mycursor1);
+}
+
+后面两个参数-1,-1，表示热点位于图片的中心位置。

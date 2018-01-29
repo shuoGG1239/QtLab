@@ -1,0 +1,26 @@
+一、
+QLabel changeLabel_1(QLabel &inputLab)
+{
+	inputLab.setText("我真的变了?");
+	return inputLab;
+}
+
+QLabel &changeLabel_2(QLabel &inputLab)
+{
+	inputLab.setText("我确实变了!");
+	return inputLab;
+}
+
+//两个函数的区别在于: 前者返回的是复制品, 后者返回的是真品
+
+const QString &str 像这种常引用是为了防止被引用的对象被修改, 所以常用在输入参数上, 可以防止
+输入参数在函数中被修改. 跟const QString *str 同一个道理。
+
+
+
+二、
+为什么引用比指针安全?
+       引用初始化后就不可以改变了。也就是说，你做不到让一个引用一会儿去引用对象A，一会儿又去引用对象B。当引用初始化为对象A的引用后，它永远只能引用对象A，它是对象A的一个别名，注意重点是对象A而不是别名，访问这个引用就是访问对象A。
+      通俗的讲就是引用对被引用对象能做到绝对的忠诚，绝不换主人。
+
+

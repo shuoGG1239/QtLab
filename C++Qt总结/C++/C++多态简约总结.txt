@@ -1,0 +1,57 @@
+class Base
+{
+public:
+	virtual void display()
+	{
+	  cout << "Base display()" << endl;
+	}
+	void say()
+	{
+	  cout << "Base say()" << endl;
+	}
+};
+
+class A: public Base
+{
+public:
+	void display()
+	{
+	  cout << "A display()" << endl;
+	} 
+
+	void say()
+	{
+	  cout << "A say()" << endl;
+	}
+};
+/*******************主函数*************************/
+/***注意父类Base的display()有virtual, 而say()没有***/
+int main()
+{
+	A a;
+	Base *base1 = &a;   //这句和A a;  等价于: Base *base =new A;
+	base1->display();    //结果显示:A display()
+	base1->say();          //结果显示:Base say()
+
+	Base *base2 =new Base;
+	base2->display();    //结果显示:Base display()
+	base2->say();          //结果显示:Base say()
+	
+}
+***************************************************************
+//总结: 类似Base *base_N =new A; 
+             1.重心放在前半句:
+	base_N->xxx的大部分东西还是Base的东西
+                Base类中的virtual系列是A的.
+             2.Base必须是A的父类,反过来不行;
+	Base换成Base的另一个子类C也不行.
+
+虚函数的作用简介:
+(类B跟A基本一样,就是类中所有的A换成B)
+	Base *base1 =new A;
+	Base *base2 =new B;
+	base1->display();           //显示:A display()
+	base2->display();           //显示:B display()
+
+这样父类Base就可以根据不同情况来灵活处理display了.
+	

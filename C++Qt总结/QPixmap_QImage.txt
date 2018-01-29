@@ -1,0 +1,35 @@
+
+/*Pixmap法*/
+ QLabel imagelabel1(frame1);
+ QPixmap image1;
+ image1.load("wifi.png");
+ image1=image1.scaled(200,200);       //设置大小
+ imagelabel1.setPixmap(image1);   //void setPixmap(const QPixmap &),意指放QPixmap类的对象(引用)
+ imagelabel1.setGeometry(10,10,image1.width(),image1.height());
+ imagelabel1.show();                        //就算有父窗体也得手动show();
+
+
+/*繁琐版:image读取再加载到pixmap再加载到label*/  
+
+    QSize size_image1W(100,100);    //建尺寸
+    QPixmap Pimage1;                     //建载体
+    QImage im1;                              //建图片
+    im1.load("null.png");                   //读图片
+    im1=im1.scaled(size_image1W);  //载尺寸,等价于 im1=im1.scaled(100,100);
+    Pimage1=Pimage1.fromImage(im1);   //载入载体
+
+   QLabel imagelabel1(frame1);       //载入label
+   imagelabel1.setPixmap(Pimage1); 
+   imagelabel1.setGeometry(10,10,Pimage1.width(),Pimage1.height());
+
+
+/*图片与label的互相适应*/
+    QPixmap image1;
+    image1.load("example.jpg");
+    ui->labelImage->setScaledContents(true); //image1自动适应label的大小
+    ui->labelImage->setPixmap(image1);
+
+    QPixmap image1;
+    image1.load("example.jpg");
+    ui->labelImage->resize(QSize(image1.width(),image1.height()));//label自动适应image1的大小
+    ui->labelImage->setPixmap(image1);

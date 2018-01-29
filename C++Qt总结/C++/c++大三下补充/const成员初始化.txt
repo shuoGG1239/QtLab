@@ -1,0 +1,8 @@
+const的成员变量的初始化只有2个方法
+1.const前面加个static;
+2.构造函数初始化列表:
+//MyClass的const成员变量constValue初始化为20
+MyClass::MyClass : constValue(20)
+{
+ ... ...
+}

@@ -1,0 +1,3 @@
+先继承QObject
+
+有QGraphicObject这个类. 可以留意一下

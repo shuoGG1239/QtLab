@@ -1,0 +1,23 @@
+double **p = new double*[num1]; 
+是一个指针数组，p申请num1个数组，每个数组元素都是double*类型的。
+
+p[i] = new double[num2];
+p[i]是double* 类型的，是申请num2个元素的数组，元素类型是double类型。
+如同 double* pdouble = new double[num2];
+此处 pdouble 等同与p[i]
+
+1.赋值方式一:
+question **qorder=new question*;
+*qorder=q1;    //question *q1=new question q1;
+order++;
+order=q2;
+
+2.赋值方式二:
+question **qorder=new question*[5];
+qorder[0]=q1;    //question *q1=new question q1;
+qorder[1]=q2;
+
+2.赋值方式三:
+question **qorder=new question*[n];   //动态数组可以自动扩充
+qorder[0]=q1;    //question *q1=new question q1;
+qorder[1]=q2;

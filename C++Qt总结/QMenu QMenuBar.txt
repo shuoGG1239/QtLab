@@ -1,0 +1,23 @@
+QMenu::addAction("help",this,SLOT(showquest()),"Alt+B");
+QMenu::addAction(QAction *);
+
+eg:
+    (this==>QWidget)
+    mymenubar=new QMenuBar(this);
+    mymenu1=new QMenu("my1",mymenubar);
+    mymenu2=new QMenu("my2",mymenubar);
+    mymenu3=new QMenu("my3",mymenubar);
+    mymenu4=new QMenu("my4",mymenubar);
+    mymenubar->addMenu(mymenu1);
+    mymenubar->addMenu(mymenu2);
+    mymenubar->addMenu(mymenu3);
+    mymenubar->addMenu(mymenu4);
+    action1=new QAction("help",mymenu1);
+    mymenu1->addAction(action1); //addAction方式1
+    mymenu1->addAction("Q&A",mymenu1,SLOT(showquest()),tr("Alt+B"));//addAction方式2
+    /*二级菜单*/
+    mymenu1_1=new QMenu("my1_1",mymenu1);
+    action1=new QAction("my1_1Act",mymenu1_1);
+    action1->setCheckable(true); //菜单项前面多个勾
+    mymenu1_1->addAction(action1);
+    mymenu1->addMenu(mymenu1_1);

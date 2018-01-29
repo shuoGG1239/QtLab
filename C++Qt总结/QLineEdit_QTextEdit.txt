@@ -1,0 +1,29 @@
+文本编辑框: QTextEdit
+文本编辑行: QLineEdit
+
+eg:
+(1)QLineEdit
+	text1 = new QLineEdit(this);
+	text1->setText("Message");
+	QString msg = text1->text();     //返回编辑行的文字
+	text1->insert("我去学校");	//从末尾插入文字
+	text1->setValidator(new QIntValidator(0,100,this));  //限制输入的内容只能是0~100的数字
+	text1->setPlaceholderText("请输入文字");   //灰色的提示输入文字
+	text1>setAlignment(Qt::AlignCenter);   //文字居中 也可以在Qt_designer设置
+
+
+(2)QTextEdit
+	text2 = new QTextEdit(this);
+	QString msg = text2->text();  
+	text2->insertPlainText("我去学校");   //QTextEdit的末尾插入
+	text2->append("我也去");	       //在下一行的首部插入
+
+(3)自带slots
+	void  clear()
+	void  copy() const
+	void  cut()
+	void  paste()
+	void  redo()
+	void  selectAll()
+	void  setText(const QString &)
+	void  undo()

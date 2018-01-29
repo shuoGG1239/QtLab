@@ -1,0 +1,23 @@
+/*正确, 我们最常用的返回就是返回return后面对象的复制*/
+/*最后返回rePic的复制*/
+QPixmap getScaledPixmap(const QPixmap &inputPic,qreal scale)
+{
+    QPixmap rePic=inputPic.scaled(inputPic.width()*scale,inputPic.height()*scale);
+    return rePic;
+}
+
+
+/*错误, 返回引用是返回对象的本身, rePic是局部变量, 函数执行完生命结束*/
+/*最后返回rePic本身*/
+QPixmap &getScaledPixmap(const QPixmap &inputPic,qreal scale)
+{
+    QPixmap rePic=inputPic.scaled(inputPic.width()*scale,inputPic.height()*scale);
+    return rePic;
+}
+
+/*正确, 相当于把进过处理的输入参数给返回了, 输入和返回均无复制处理*/
+/*最后返回输入对象本身*/
+QPixmap &getScaledPixmap(QPixmap &inputPic,qreal scale)
+{
+    return inputPic.setScaled(200,200);
+}

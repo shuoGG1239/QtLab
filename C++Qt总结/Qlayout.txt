@@ -1,0 +1,12 @@
+
+/*垂直排布*/	
+    QVBoxLayout *Llayout= new QVBoxLayout;
+    Llayout->addWidget(shuoggb1);
+    Llayout->addWidget(shuoggb2);
+    Llayout->addWidget(shuoggb3);
+    Llayout->addStretch();	      //插补
+    Llayout->setSpacing(1);              //垂直间隔
+
+    QWidget aaa(frame1);
+    aaa.setLayout(Llayout);
+    aaa.setGeometry(400,300,400,400);   //用widget将layout打包,方便位移

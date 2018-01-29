@@ -1,0 +1,111 @@
+关于Qt界面的出现消失效果，我简单介绍两种方法。
+
+1、方法一
+
+(0)界面出现shuoGG自制方法:
+
+{
+    /***************this是被渐变的对象******************/
+    /***********this换成谁谁就可以渐变出现,其他不用改,直接复制就可以用************/
+
+    QGraphicsOpacityEffect *myeffect=new QGraphicsOpacityEffect;
+    this->setGraphicsEffect(myeffect);
+    QPropertyAnimation *animation1 = new QPropertyAnimation(myeffect,"opacity");
+    animation1->setDuration(1000);
+    animation1->setStartValue(0);
+    animation1->setEndValue(1);
+    animation1->start(); 
+}
+
+
+（1）界面出现
+ 
+将下面这段代码放在界面的构造函数当中就行
+ //界面动画，改变透明度的方式出现0 - 1渐变
+ QPropertyAnimation *animation = new QPropertyAnimation(this, "windowOpacity");
+ animation->setDuration(1000);
+ animation->setStartValue(0);
+ animation->setEndValue(1);
+ animation->start();
+ 
+（2）界面消失：
+ 
+既然是界面消失，应当是按下关闭按钮时界面消失，如下：
+ 
+//连接关闭按钮信号和槽
+QObject::connect(close_button, SIGNAL(clicked()), this, SLOT(closeWidget()));
+ 
+//槽函数如下，主要进行界面透明度的改变，完成之后连接槽close来调用closeEvent事件
+bool LoginDialog::closeWidget()
+{
+   //界面动画，改变透明度的方式消失1 - 0渐变
+   QPropertyAnimation *animation = new QPropertyAnimation(this, "windowOpacity");
+   animation->setDuration(1000);
+   animation->setStartValue(1);
+   animation->setEndValue(0);
+   animation->start();
+   connect(animation, SIGNAL(finished()), this, SLOT(close()));
+ 
+   return true;  
+}
+void LoginDialog::closeEvent(QCloseEvent *)
+{
+    //退出系统
+    QApplication::quit();
+}
+ 
+2、方法二
+在这里贴出消失时候的代码，其实出现的时候类似
+ 
+界面消失：
+void LoginDialog::closeEvent(QCloseEvent *)
+{
+ for(int i=0; i< 100000; i++)
+ {
+  if(i<10000)
+  {
+   this->setWindowOpacity(0.9);
+  }
+  else if(i<20000)
+  {
+   this->setWindowOpacity(0.8);
+  }
+  else if(i<30000)
+  {
+   this->setWindowOpacity(0.7);
+  }
+  else if(i<40000)
+  {
+   this->setWindowOpacity(0.6);
+  }
+  else if(i<50000)
+  {
+   this->setWindowOpacity(0.5);
+  }
+  else if(i<60000)
+  {
+   this->setWindowOpacity(0.4);
+  }
+  else if(i<70000)
+  {
+   this->setWindowOpacity(0.3);
+  }
+  else if(i<80000)
+  {
+   this->setWindowOpacity(0.2);
+  }
+  else if(i<90000)
+  {
+   this->setWindowOpacity(0.1);
+  }
+  else
+  {
+   this->setWindowOpacity(0.0);
+  }
+ }
+
+ //进行窗口退出
+  QApplication::quit();
+}
+ 
+    对比看来，第二种方法比较笨拙，而且效率差，所以优先选择方法一

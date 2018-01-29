@@ -1,0 +1,25 @@
+一.  dll的生成:
+1.  在.pro文件中将
+	TEMPLATE = app 改为 TEMPLATE = lib
+
+2.  在想要生成的dll的类那里加入 Q_DECL_EXPORT 字段, 该字段在<qglobal.h>头文件, 记得包含;
+
+3. 实例:
+#include <qglobal.h>
+
+class  Q_DECL_EXPORT  shuoGGWidget
+{
+ 	... ...
+};
+
+二. dll的使用:
+1. 在工程中添加要使用的dll如下:
+	LIBS += signalTest.dll
+
+2. 将使用的dll放到你的资源根目录;
+
+3. 将signalTest.dll使用到的所有自定义头文件放到工程代码处;
+
+4. 在工程需要的地方include自定义的那些头文件, 然后就可以使用dll里面的那些类了;
+
+ps: dll只是封装了方法的实现, 使用dll的时候最终还是需要那些头文件的，当然cpp就不用了；

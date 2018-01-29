@@ -1,0 +1,25 @@
+QSlider:
+    music_loud_slider=new QSlider(Qt::Horizontal,dialog_config);
+    music_loud_slider->setGeometry(160,35,110,20);
+    music_loud_slider->setFocusPolicy(Qt::StrongFocus);
+    music_loud_slider->setValue(80);  //音量初始值
+    music_loud_slider->setRange(0,160);
+    connect(music_loud_slider, SIGNAL(valueChanged(int)), this, SLOT(changeloud(int)));
+//    music_loud_slider->setTickInterval(10);
+//    music_loud_slider->setSingleStep(1);
+
+QSpinbox:
+        spinbox->setSingleStep(2);       //设置每步增减的幅度
+        spinbox->setRange(0,100);       //设置变化范围  
+        spinbox->setSuffix("km");       //设置输出显示前缀  
+        spinbox->setPrefix("速度:");    //设置输出显示后缀  
+        spinbox->resize(200,40);        //设置大小  
+        spinbox->setValue(50);          //设置初始值  
+        spinbox->setMaximum(100);     //设置最大值  
+        spinbox->setMinimun(0);       //设置最小值  
+        spinbox->setAlignment(Qt::AlignHCenter);  //文字居中
+其他的设置跟QSlider大同小异
+
+
+
+	

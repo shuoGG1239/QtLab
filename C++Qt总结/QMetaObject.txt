@@ -1,0 +1,92 @@
+Meta-Object机制主要是为了实现 信号槽功能及内省(反射)功能，由Q_OBJECT宏生成moc代码从而实现这些功能；(moc-- MetaObject compiler)
+
+只要继承QObject并声明Q_OBJECT就拥有元对象(QMetaObject)，拥有元对象就支持反射。
+
+什么是反射：
+	定义: 运行时可以获取对象的类的相关信息 ;
+	根据实例可以获取其是哪个类的，即逆推；
+	还可以在运行过程中动态地修改这个对象的类；(就如Python)
+	完整地说应该是能通过实例获取其所有的属性,成员和方法；
+
+每个继承了QObject并声明了Q_OBJECT的类的对象都有一个staticMetaObject的静态对象, 通过这个静态对象就可以进行各种反射操作:
+eg: 
+    QWidget mywidget;
+    mywidget.staticMetaObject.className();  //返回char*, "QWidget"
+    mywidget.staticMetaObject.classInfoCount(); //返回int
+    mywidget.staticMetaObject.classInfo(1);        //返回一个QMetaClassInfo对象
+    mywidget.staticMetaObject.newInstance();   //生成对象, 参考java的newInstance
+   //实用newInstance构造函数须标明Q_INVOKABLE
+
+其他实用的meta函数: 
+QMetaObject::className() //返回类名,const char*格式
+QMetaObject::superClass()  //若存在基类的QMetaObject, 则返回其指针, 无则返0
+QMetaObject::methodCount() //返回成员函数的个数
+
+RTTI(Run Time Type Identification): 运行时类型识别
+
+qobject_cast比dynamic_cast性能好很多
+吧qobject_cast用于非QObject的基类, 需要把每个基类都放在一个形如Q_INTERFACES(Baseclass1 Baseclass2)
+的代码行内, 并把它放到类定义中Q_OBJECT宏的后面.
+
+在Q_PROPERTY定义操作枚举属性时，还得使用Q_ENUM(enumName)，不然会出错；
+
+property()和setProperty(): 任何继承了QObject的类都拥有这俩函数，所以就可以通过这个特点来获取或设置其属性了，多态的表现。好处: 所有的类统一用setProperty和property就可以访问或设置其属性, 就如输入参数为接口一样.
+eg:
+Q_PROPERTY(QPoint shuoPos READ pos WRITE setPos)
+------setProperty("shuoPos", QPoint(20,20));   
+------QPoint mypoint=property("shuoPos");
+
+元对象反射的应用1:
+  ui_designer界面的实现，其实拖动的控件到界面时, 就是new了这个控件, 然后通过这个对象, 
+  运用反射就可以获取这个对象所属类的所有信息, 就是右下角显示的那些属性。
+
+元对象反射的应用2: hibernate的实现;
+
+元对象反射的应用3:
+/***************************通过类名获取对象的实现*****************************/
+#define REFLECTION_H
+
+#include <QByteArray>
+#include <QMetaObject>
+#include <QHash>
+
+class ObjectFactory
+{
+public:
+    template<typename T>
+    static void registerClass()
+    {
+        constructors().insert( T::staticMetaObject.className(), &constructorHelper<T> );
+    }
+
+    static QObject* createObject( const QByteArray& className, QObject* parent = NULL )
+    {
+        Constructor constructor = constructors().value( className );
+        if ( constructor == NULL )
+            return NULL;
+        return (*constructor)( parent );
+    }
+
+private:
+    typedef QObject* (*Constructor)( QObject* parent );
+
+    template<typename T>
+    static QObject* constructorHelper( QObject* parent )
+    {
+        return new T( parent );
+    }
+
+    static QHash<QByteArray, Constructor>& constructors()
+    {
+        static QHash<QByteArray, Constructor> instance;
+        return instance;
+    }
+};
+
+#endif // REFLECTION_H
+
+
+ObjectFatory::registerClass<MyObject>();  //先注册类名
+MyObject *object=(MyObject*)ObjectFatory::createObject("MyObject"); //然后就可以创建类了
+
+

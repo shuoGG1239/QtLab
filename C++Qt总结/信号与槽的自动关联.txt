@@ -1,0 +1,36 @@
+1.自动关联说白了就只是改变一下槽函数的名字而已,然后再加下面这一句就行了.
+    QMetaObject::connectSlotsByName(this);   //自动关联必须加这一句
+
+2.槽函数命名格式:void on_发射对象的NAME_发射的信号();
+
+3.如果是用Qt_Designer设计出的ui则不用手动加上QMetaObject::connectSlotsByName(this);
+因为在setupUi()里面已经有这句了,手动加的话只会导致一个信号执行2次槽函数!
+
+
+
+/**********************自动关联的实例***********************************/
+/*实现按一下butt1就改变壁纸*/
+class mywidget:public QFrame
+{
+    Q_OBJECT
+public:
+    mywidget(QWidget *parent);
+    QPushButton *butt1;
+public slots:
+    void on_bu1_clicked();
+};
+
+ mywidget::mywidget(QWidget *parent):QFrame(parent)
+{
+    butt1=new QPushButton(this);
+    butt1->setObjectName("bu1");     //记住on_的后面是发射者的名字,是名字记住!
+    this->setObjectName("My_First");
+    this->setStyleSheet("QFrame#My_First{border-image:url(main.jpg)}");
+
+    QMetaObject::connectSlotsByName(this);   //自动关联必须加这一句
+}
+
+void mywidget::on_bu1_clicked()
+{
+    setStyleSheet("QFrame#My_First{border-image:url(scene1.jpg)}");
+}

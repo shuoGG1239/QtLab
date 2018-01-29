@@ -1,0 +1,19 @@
+SLOT()这个宏其实是将括号内的函数按一定规则转化为字符串const char*，
+所以如果想将slot作为输入参数, 可以如下进行: 
+eg:
+
+void MainWindow::init()
+{
+    addToMenu(plugin, iFilter->filters(), filterMenu, SLOT(applyFilter()));
+}
+
+void MainWindow::addToMenu(QObject *plugin, const QString &text,
+                           QMenu *menu, const char *memberslot)
+{
+    QAction *action = new QAction(text, plugin);
+    connect(action, SIGNAL(triggered()), this, memberslot);
+    menu->addAction(action);
+}
+
+ps：
+SIGNAL()和SLOT()原理一样，所以可以按上面的套路将signal也作为参数输入。

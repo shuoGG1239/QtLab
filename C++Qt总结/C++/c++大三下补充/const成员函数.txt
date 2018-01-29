@@ -1,0 +1,6 @@
+int MyClass::myfunc() const
+{
+
+}
+
+//函数里面不得有任何赋值操作

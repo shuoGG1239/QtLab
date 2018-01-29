@@ -1,0 +1,25 @@
+
+徨窃距喘幻窃議更夛痕方:
+ #include <iostream.h>
+　　class animal
+　　{
+　　public:
+　　　　animal(int height, int weight)
+　　　　{
+　　　　　　cout<<"animal construct"<<endl;
+　　　　}
+　　　　´
+　　};
+　　class fish:public animal
+　　{
+　　public:
+　　　　fish():animal(400,300)
+　　　　{
+　　　　　　cout<<"fish construct"<<endl;
+　　　　}
+　　　　´
+　　};
+　　void main()
+　　{
+　　　　fish fh;
+　　}

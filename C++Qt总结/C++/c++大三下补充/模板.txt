@@ -1,0 +1,68 @@
+模板的作用:
+   能够让程序员编写与类型无关的代码。
+
+
+注意：模板的声明或定义只能在全局、命名空间或类范围内进行。即不能在局部范围，函数内进行。
+
+template为关键，表示要声明一个模板。
+typename为关键字
+可以为typename也可以为class, 看具体情况
+
+/****************************ClassTemplate.h*/
+#ifndef ClassTemplate_HH
+#define ClassTemplate_HH
+
+template<typename T1,typename T2>
+class myClass{
+private:
+     T1 myvalue1;
+     T2 myvalue2;
+public:
+     myClass(T1 a, T2 b);
+     void show();
+};
+
+
+/*****************************ClassTemplate.cpp*/
+#include "ClassTemplate.h"
+template <typename T1,typename T2>
+myClass<T1,T2>::myClass(T1 a,T2 b) : myvalue1(a), myvalue2(b)
+{
+    //构造函数
+}
+
+template <typename T1,typename T2>
+void myClass<T1,T2>::show()
+{
+     cout<<"Value1="<<myvalue1<<", Value2="<<myvalue2<<endl;
+}
+#endif
+
+
+/*******************************Test.cpp*/
+#include <iostream>
+#include "ClassTemplate.h"
+using std::cout;
+using std::endl;
+
+void main()
+{
+     myClass<int,int> class1(3,5);
+     class1.show();
+
+     myClass<int,char> class2(3,'a');
+     class2.show();
+
+     myClass<double,int> class3(2.9,10);
+     class3.show();
+
+     system("PAUSE");
+}
+
+//输出结果: Value1=3, Value2=5
+     	 Value1=3, Value2=a       
+	 Value1=2.9, Value2=10      
+
+
+ps:模板的一些特殊用法:
+  class specialClass=myClass<float,float>;

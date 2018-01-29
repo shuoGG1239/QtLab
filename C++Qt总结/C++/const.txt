@@ -1,0 +1,62 @@
+const总的特点: 有且仅有一个值,有了初值之后就不能改
+cosnt结合原则: 左结合，左为空则右结合：
+	const char *a; //a指向的char数据不能修改
+	char const *a; //a指向的char数据不能修改
+	char *const a; //a指针不能修改
+
+1.常对象:
+
+常对象必须有初值:
+Qimage const im1("哈哈",445);
+也可以写成:  const Qimage im1("哈哈",445);
+
+const的对象的所有成员都不能被修改, 无论什么情况都改不了
+但想引用里面的变量成员还是可以的,而且该引用的函数后面必须加个const
+eg: void get_time() const;  //能用const变量,但改不了
+
+如果真的想改,那只能将const的对象的类中的变量加个mutable:
+
+class Qimage{
+mutable int count;  //此时const函数就可以改它了
+}
+
+2.常数据成员
+
+在类里面,若有: const int hour; //声明hour为常数据成员
+必须在类外定义构造函数来让常数据成员初始化:
+Time::Time(int h):hour(h) 
+{
+	//当对象被new出来的时候hour自动=形参h
+}
+
+3.常成员函数
+void get_time() const;  //只能引用数据,不能改变数据,包括非const数据成员
+
+4.常指针
+Time * const ptr1;  //ptr1只能指向一个,也就不能改指针方向
+ptr1= &t1;             //对,初始化指针
+ptr1= &t2;             //错,不能改了
+
+5.指向常对象的指针
+const char *ptr;
+(1) 如果一个对象已被声明为常对象，只能用指向常对象的指针变量指向它，而不能用一般的（指
+向非const型对象的）指针变量去指向它。
+(2) 如果定义了一个指向常对象的指针变量，并使它指向一个非const的对象，则其指向的对象是不
+能通过指针来改变的。如果希望在任何情况下t1的值都不能改变，则应把它定义为const型。
+(3) 指向常对象的指针最常用于函数的形参，目的是在保护形参指针所指向的对象，使它在函数执
+行过程中不被修改。
+
+6对象的常引用
+eg: 
+  void fun(const Time &t1)
+{
+   cout<<t1.hour<<endl;	//正确
+}
+
+  void fun(const Time &t1)
+{
+   t1.hour=11;	               //错误,Time本来是普通类,但形参加个const就临时变成const类了
+}
+
+形参给类临时加const可以保护对象的数据,也就是只能用方法,但不能改数据
+或者可以理解成对象只能被赋一次值,以后不能改了.

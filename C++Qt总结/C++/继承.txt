@@ -1,0 +1,125 @@
+(1)基类 的成员函数 可以 访问 基类 成员.
+
+(2)派生类 的成员函数 可以 访问 派生类 成员.
+
+(3)私有数据成员只能被同一类中的成员函数访问，派生类不可以访问父类的private
+公用成员可以被外界访问.
+
+(4)基类 的成员函数 不能 访问 派生类 的成员.
+
+(5)在 派生类外 可以 访问 派生类 的 公用成员，而不能访问派生类的私有成员.
+
+(6)派生的方法可以调用私有继承的父类的public方法
+
+
+（1） 公用继承（public inheritance）
+基类的所有成员属性原封不动地继承过来,
+public还是public,private还是private,protect还是protect
+（2） 私有继承（private inheritance）
+基类的所有成员继承过来全都变private.
+（3） 受保护的继承（protected inheritance）
+基类的公用成员和保护成员在派生类中成了保护成
+员，其私有成员仍为基类私有。
+保护成员的意思是: 不能被外界引用，但可以被派
+生类的成员引用
+
+举例:
+
+#include <iostream>
+#include <string>
+using namespace std;
+class Student //声明基类
+{
+public:
+	//基类公用成员
+	void display();
+protected:
+	//基类保护成员
+	int num;
+	string name;
+	char sex;
+private: 
+               //基类私有成员
+	int shuoggpower;
+};
+void Student::display()
+{
+	cout << "num:" << num << endl;
+	cout << "name:" << name << endl;
+	cout << "sex:" << sex << endl;
+}
+class Student1: protected Student //用protected方式声明派生类Student1
+{
+public:
+	void display1(); //派生类公用成员函数
+private:
+	int age; //派生类私有数据成员
+	string addr; //派生类私有数据成员
+};
+void Student1::display1() //定义派生类公用成员函数
+{
+	cout << "num: " << num << endl;      //引用基类的保护成员，合法
+	cout << "name: " << name << endl;  //引用基类的保护成员，合法
+	cout << "sex: " << sex << endl;         //引用基类的保护成员，合法
+	cout << "age: " << age << endl;        //引用派生类的私有成员，合法
+	cout << "address: " << addr << endl; //引用派生类的私有成员，合法
+	cout << "power: " << shuoggpower << endl; //引用基类的私有成员，不合法
+}
+int main()
+{
+	Student1 stud1; //stud1是派生类Student1类的对象
+	stud1.display1(); //合法，display1是派生类中的公用成员函数
+	// stud1.num=10023 //错误，外界不能访问保护成员
+	return 0;
+}
+*****************************************************************************
+//继承方式像:
+class Student1: protected Student
+class Student1: private Student
+class Student1: public Student
+不会影响到类内的操作,但在类外就有区别了.
+例如: 
+class Student1: private Student{};
+main()
+{
+  Student1	 xiaoming;
+  xiaoming.display(); //错误,基类display()虽然是公用,但声明类是是private方式继承基类的display()的.
+}
+
+*******************************************************************************
+构造函数的继承和初始化:
+
+class Abase
+{
+public:
+         Abase(int n,char m)
+	{
+	  number=n;
+	  name=m;	  
+	}
+private:
+          int  number;
+          char name;
+}
+
+class A1:Abase
+{
+public:
+            A1(int n1,char n2,int n3,int n4):Abase(n1,n2)          //按顺序,先初始化父类
+           {
+   	score=n3;
+	id=n4;
+           }
+private:
+	int score;
+	int id;
+}
+/*********************A1由多个父类继承过来,则:
+ A1(int n1,char n2,int m1,int m2,int n3,int n4):Abase(n1,n2),AParent(m1,m2)
+{
+   	score=n3;
+	id=n4;	
+}   
+**************************************************/ 
+
+

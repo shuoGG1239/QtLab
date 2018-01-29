@@ -1,0 +1,48 @@
+QCheckBox: 小方块里的小钩钩
+
+checkBox-->click();    //按下，其实效果看就是反转，只不过发的信号不同
+checkBox->toggle();  //反转，本来勾则去掉勾,本来没勾则勾
+
+bool isChecked();  //用来判断状态
+
+checkBox->setCheck(true); //打钩
+checkBox->setCheck(false);//去钩
+(checkBox可以用setCheck来去掉和打上勾，而combox则不可)
+
+
+信号基本用clicked()就够用了
+
+其他信号:
+pressed(), released(), toggled()
+
+
+
+/********************************样式表**************************************/
+QCheckBox {
+	spacing: 5px;  # 在这里我们也可以设置复选的文本样式
+}
+
+QCheckBox::indicator {
+	width: 15px;
+	height: 15px;
+}
+
+QCheckBox::indicator:unchecked {
+	image: url(:/buttonbg/checkbox_normal);
+}
+
+QCheckBox::indicator:unchecked:disabled {
+	image: url(:/buttonbg/checkbox_disable);
+}
+
+QCheckBox::indicator:unchecked:hover {
+	image: url(:/buttonbg/checkbox_hover);
+}
+
+QCheckBox::indicator:checked {
+	image: url(:/buttonbg/checkbox_down);
+}
+
+QCheckBox::indicator:indeterminate {
+	image: url(:/buttonbg/checkbox_indeterminate);
+}

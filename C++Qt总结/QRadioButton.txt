@@ -1,0 +1,39 @@
+
+/************************************样式表***************************************/
+QRadioButton {
+	spacing: 5px;
+	font-size: 14px;
+	color: rgb(24, 220, 88);   # 连同 font-size一齐设置按钮的文本样式
+}
+
+QRadioButton::indicator {   # 设置为我们图片的大小, indicator为radio中被点击的部分
+	width: 15px;
+	height: 15px
+}
+
+QRadioButton::indicator:checked {   # 按钮选中的状态
+	image: url(:/buttonbg/radio_down);
+}
+
+QRadioButton::indicator:disabled {  # 按钮禁用时的状态
+	image: url(:/buttonbg/radio_disable);
+}
+
+QRadioButton::indicator:unchecked {  # 未选中时的状态
+	image: url(:/buttonbg/radio_normal);
+}
+
+QRadioButton::indicator:unchecked:hover {  # 未选中时的鼠标悬停状态
+	image: url(:/buttonbg/radio_hover1);
+}
+
+QRadioButton::indicator:checked:hover {  # 选中时的鼠标悬停状态
+	image: url(:/buttonbg/radio_hover2);
+}
+
+QRadioButton::indicator:unchecked:disabled {  # 按钮禁用且未选中时的状态
+	image: url(:/buttonbg/radio_disable1);
+}
+QRadioButton::indicator:checked:disabled {  # 按钮禁用且选中时的状态
+	image: url(:/buttonbg/radio_disable2);
+}

@@ -1,0 +1,14 @@
+在类里面用this表示该类的对象--相当强大
+
+在写这个类的时候由于该类的对象还没创建,所以用this来代替就行了
+
+
+newframe1::newframe1(QWidget* parent):QFrame(parent)
+ {
+
+    Blue_Button *butt1=new Blue_Button(this);
+    Blue_Button *butt2=new Blue_Button(this);
+    Blue_Button *butt3=new Blue_Button(this);
+    Blue_Button *butt4=new Blue_Button(this);
+    Blue_Button *butt5=new Blue_Button(this);
+}

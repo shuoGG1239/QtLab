@@ -1,0 +1,26 @@
+友元函数:  //相当于一个"全局函数"
+ class A
+{
+    friend void showtext()
+    {
+         cout<<"friend func";
+    }
+};
+
+main()
+{
+    showtext();  //不用对象,不用域,就可以调用
+}
+--------------------------------------------------------------------------------------
+友元类:
+
+class A
+{
+public:
+    friend class B;  //B是A的朋友，所以B可以访问A私有的东西
+
+private:
+   int threesize;	
+}
+
+ps: 友元关系是单向的,不可继承,不可传递

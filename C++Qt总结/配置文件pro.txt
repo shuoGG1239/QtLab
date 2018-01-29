@@ -1,0 +1,21 @@
+QT += core gui
+QT += network
+QT += multimedia
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+TARGET = TCP_COM
+TEMPLATE = app
+
+
+SOURCES += main.cpp\
+        mainwindow.cpp \
+    mytcpserver.cpp\
+    mytcpclient.cpp
+
+HEADERS  += mainwindow.h \
+    mytcpserver.h\
+    mytcpclient.h
+
+FORMS    += mainwindow.ui
+RESOURCES += \
+    main.qrc

@@ -1,0 +1,51 @@
+#include <QTime>
+#include <qglobal.h>
+
+        QTime time1=QTime::currentTime();
+        qsrand(time1.msec()+time1.second()*1000);
+        num= ( qrand()%6 )+1;  		//产生1~6的随机数
+
+qsrand(uint seed)  :产生一个无规律的数列,一个seed值对应一个数列. 为下一句qrand()做准备
+qrand()   :伪随机数,根据qsrand产生的数列来按顺序抽一个数, 执行一次抽一个.
+currentTime(): 返回一个QTime对象, 该对象的时间成员与电脑此时的时间对应
+
+
+/**
+ * @brief 在某个区间内获得一个随机数
+ *
+ * @param min 最小小
+ * @param max 最大数
+ * @return int
+ */
+int  getRandomNum(int min,int max)
+{
+    if(max <= min)
+        return 0;
+    QString numStr;
+    QTime   time1=QTime::currentTime();
+    qsrand(time1.msec()+time1.second()*1000);
+    int num=(qrand()%max)+min;  	
+    return num;
+}
+
+
+
+/**
+ * @brief 在某个区间内获得一个随机数(字符串)
+ *
+ * @param min 最小小
+ * @param max 最大数
+ * @param strlen 几位数: 个位数为1,十位数为2,百位数为3,不够则自动补零
+ * @return QString
+ */
+QString  getRandomNumStr(int min,int max,int strlen)
+{
+    if(max <= min && strlen<=0)
+        return QString("");
+    QString numStr;
+    QTime   time1=QTime::currentTime();
+    qsrand(time1.msec()+time1.second()*1000);
+    int num=(qrand()%max)+min;  		
+    numStr=QString("%1").arg(num,strlen,10,QLatin1Char('0'));
+    return numStr;
+}

@@ -1,0 +1,46 @@
+0.常用属性:
+pos   geometry   windowOpacity
+
+1.父子属性动画有冲突:
+注意: 假设A是a1的父窗体即parent. 
+	A有自己的动画ANI1
+	子窗体a1也有自己的动画ani1
+	则两者的QPropertyAnimation不能同时进行,必须stop()掉其中一个才可以继续!!!
+	但用状态机则不会受到这种现实
+
+2.属性动画的常用函数:    	
+  //构造函数的第一个形参( 目标对象，对象属性 ); 属性可以在对应目标对象的"Properties"下找 
+  QPropertyAnimation *animation = new QPropertyAnimation(frame1,"windowOpacity");
+      animation->setDuration(1000);   	//整一个动画1000ms
+      animation->setStartValue(0);      	//动画属性起始值
+      animation->setEndValue(1);       	//动画属性结束值
+      animation->setKeyValueAt(0.5,0.1);	//过完一半的时间时Value=0.1
+      animation->setLoopCount(1);            //循环次数,-1为无限循环,不是0!
+      animation->start();	       	 //开始动画
+
+3.属性动画的曲线函数:
+animation->setEasingCurve(QEasingCurve::OutBounce);//outbounce有一个缓冲的现象
+animation->setEasingCurve(QEasingCurve::OutBack);//outback缓慢降落
+animation->setEasingCurve(QEasingCurve::OutCirc);//outcirc和outback差不多
+animation->setEasingCurve(QEasingCurve::OutBounce);//弹跳效果
+
+QEasingCurve::OutBounce
+
+
+4.完整的属性动画函数
+/*这是一个图片移动的动画*/
+void MoveWidget::star()
+{
+ this->myWidget->setPixmap(QPixmap(this->path + "/hello.png"));
+ this->myWidget2->setPixmap(QPixmap(this->path + "/hello1.png"));
+ this->animation->setDuration(2000);//速度,越小越快
+ this->animation->setStartValue(QRect(0,0,158,168));
+ this->animation->setEndValue(QRect(250,250,158,168));
+ this->animation->setEasingCurve(QEasingCurve::OutInQuart);
+ this->animation->start();
+ this->animation2->setDuration(2000);
+ this->animation2->setStartValue(QRect(0,360,158,168));
+ this->animation2->setEndValue(QRect(110,180,158,168));
+ this->animation2->setEasingCurve(QEasingCurve::OutBounce);
+ this->animation2->start();
+}

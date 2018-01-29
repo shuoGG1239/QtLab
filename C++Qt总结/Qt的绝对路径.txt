@@ -1,0 +1,12 @@
+以下举个例子：
+
+QDir temDir("./NewTopoShow/TopoShow111.swf");
+//QDir temDir("NewTopoShow/TopoShow111.swf");   这样也可以
+QString absDir = temDir.absolutePath();
+
+直接返回一个QString类型的对象。
+
+得到的路径是例如E:/aa/bb/cc.txt 格式的路径，但实际有些使用路径的函数中需要的路径格式为E:\\aa\\bb\\cc.txt这种格式，所以需要对格式进行简单的转换，QString中有个replace函数可以帮我们完成。
+
+absDir.replace(QString("/"),QString("\\\\"));
+后面之所以四个\\\\是因为包含了两个转义字符，这样就可以转换成相应格式的绝对路径了。

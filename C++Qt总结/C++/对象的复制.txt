@@ -1,0 +1,5 @@
+方式1:
+Box box2(box1);
+复制box1的所有参数粘贴在box2
+方式2:
+Box box2=box1;
