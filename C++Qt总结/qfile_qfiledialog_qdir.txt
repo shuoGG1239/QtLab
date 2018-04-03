@@ -9,6 +9,7 @@ Qt的"path"是指不包含本文件的路径;
 QFileDialog::getExistingDirectory(this);   //获取一个文件夹的全路径, 不加this的话选完窗口会自动最小化
 QFileDialog::getOpenFileName(this);      //获取一个文件的全路径
 QFileDialog::getOpenFileNames(this);     //获取多个文件的全路径, 在filedialog可以框选多个文件
+QFileDialog.getSaveFileName(this);	  //保存文件的窗口, 返回新建文件的全路径
 
 
 #include <QFileInfo>
